@@ -14,7 +14,7 @@ public class Main {
 		
 		p.placeBomb();
 		
-		p.setX(9);
+		p.setX(6);
 		p.setY(4);
 		
 		try {
