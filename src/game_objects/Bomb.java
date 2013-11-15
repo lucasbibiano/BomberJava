@@ -1,5 +1,8 @@
 package game_objects;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+
 import behavior.Explodable;
 import thread.SharedThreadPool;
 import core.Game;
@@ -7,7 +10,17 @@ import events.ExplodeEvent;
 
 public class Bomb extends GameObject implements Explodable {
 	
-	protected static final int TIME_TO_EXPLODE = 3000;
+	//protected static final int TIME_TO_EXPLODE = 3000;
+	
+	//cria um time to explode unico que vai ser acessado através do get() da threadLocal.
+	private static final AtomicInteger uniqueTTE = new AtomicInteger(3000);
+	
+	private static final ThreadLocal<Integer> timeToExplode = 
+		new ThreadLocal<Integer> () {
+             @Override protected Integer initialValue() {
+                 return uniqueTTE.get();
+             }	
+		};
 	
 	private int flameLevel;
 	private int playerNumber;
@@ -83,6 +96,8 @@ public class Bomb extends GameObject implements Explodable {
 			@Override
 			public void run() {
 				System.out.println("Starting " + bomb);
+				//nova variável int recebe o get() do time to explode, pra usar no sleep.
+				int TIME_TO_EXPLODE = timeToExplode.get(); 
 				
 				try {
 					Thread.sleep(TIME_TO_EXPLODE);

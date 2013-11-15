@@ -14,12 +14,16 @@ public class Main {
 		
 		p.placeBomb();
 		
-		p.setX(11);
-		p.setY(15);
-		
+		p.setX(1);
+		p.setY(1);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		p.placeBomb();
-		
-		
+			
 		p.setX(0);
 		p.setY(0);
 	}
