@@ -4,11 +4,11 @@ import constants.Constants.Movement;
 import core.Game;
 import game_objects.Map;
 import game_objects.Player;
+import graphics.window.GameWindow;
 
 public class Main{
 	
-	public static void main(String[] args) {
-		
+	public static void main(String[] args) {		
 		Map map = new Map();
 		Game game = new Game(map);
 		Player p = new Player(game, 0, 0, 1);
