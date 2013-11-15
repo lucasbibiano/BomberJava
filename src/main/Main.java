@@ -9,13 +9,13 @@ public class Main {
 		Map map = new Map();
 		Game game = new Game(map);
 		Player p = new Player(game, 1);
-		p.setX(10);
-		p.setY(15);
+		p.setX(6);
+		p.setY(6);
 		
 		p.placeBomb();
 		
-		p.setX(6);
-		p.setY(4);
+		p.setX(7);
+		p.setY(7);
 		
 		try {
 			Thread.sleep(2000);
