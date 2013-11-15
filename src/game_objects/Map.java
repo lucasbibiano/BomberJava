@@ -39,4 +39,8 @@ public class Map {
 	public int getyLimit(){
 		return yLimit;
 	}
+	
+	public boolean isMovableSpace(int x, int y){
+		return ((objAt(x, y) != null && objAt(x, y).isTrepassable()) || objAt(x, y) == null);
+	}
 }

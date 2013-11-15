@@ -1,0 +1,47 @@
+package main;
+
+import core.Game;
+import game_objects.Map;
+import game_objects.Player;
+
+public class Main {
+	public static void main(String[] args) {
+		Map map = new Map();
+		Game game = new Game(map);
+<<<<<<< Updated upstream
+		Player p = new Player(game, 1);
+		p.setX(6);
+		p.setY(6);
+		
+		p.placeBomb();
+		
+		p.setX(7);
+		p.setY(7);
+		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		p.placeBomb();
+			
+=======
+		Player p = new Player(game, 10, 15, 1);
+		
+		p.placeBomb();
+		
+>>>>>>> Stashed changes
+		p.setX(0);
+		p.setY(0);
+		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		p.placeBomb();
+
+	}
+}

@@ -6,6 +6,8 @@ public abstract class GameObject {
 	private int x;
 	private int y;
 	
+	protected boolean trepassable = false;
+	
 	private Game game;
 	
 	Map map;
@@ -43,11 +45,15 @@ public abstract class GameObject {
 	}
 	
 	public boolean isValidY(int y){
-		return (-1 < y && y < map.getyLimit() );
+		return (-1 < y && y < map.getyLimit() && map.isMovableSpace(getX(), y));
 	}
 	
+	public boolean isTrepassable() {		
+		return trepassable;
+	}
+
 	public boolean isValidX(int x){
-		return (-1 < x && x < map.getxLimit() );
+		return (-1 < x && x < map.getxLimit() && map.isMovableSpace(x, getY()));
 	}
 	
 }
