@@ -8,8 +8,10 @@ public abstract class GameObject {
 	
 	private Game game;
 	
-	public GameObject(Game game) {
+	public GameObject(Game game, int x, int y) {
 		this.game = game;
+		this.x = x;
+		this.y = y;
 	}
 
 	@Override

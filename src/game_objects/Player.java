@@ -1,8 +1,10 @@
 package game_objects;
 
+import behavior.Explodable;
 import core.Game;
+import events.ExplodeEvent;
 
-public class Player extends GameObject {
+public class Player extends GameObject implements Explodable {
 	private int number;
 	
 	private int speed;
@@ -11,8 +13,10 @@ public class Player extends GameObject {
 	private int maxBombs;
 	private int activeBombs;
 	
-	public Player(Game game, int number) {
-		super(game);
+	private boolean dead;
+	
+	public Player(Game game, int x, int y, int number) {
+		super(game, x, y);
 		this.number = number;
 		
 		flameLevel = 1;
@@ -27,8 +31,18 @@ public class Player extends GameObject {
 		map.addObject(bombToAdd);
 		bombToAdd.start();
 	}
+	
+	@Override
+	public void exploded(ExplodeEvent e) {
+		dead = true;
+		System.out.println("Player #" + number + " has been killed by player #" + e.getPlayerNumber());
+	}
 
 	public int getNumber() {
 		return number;
+	}
+
+	public boolean isDead() {
+		return dead;
 	}
 }
