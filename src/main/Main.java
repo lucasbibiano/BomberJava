@@ -14,8 +14,8 @@ public class Main {
 		
 		p.placeBomb();
 		
-		p.setX(8);
-		p.setY(3);
+		p.setX(9);
+		p.setY(4);
 		
 		try {
 			Thread.sleep(2000);
