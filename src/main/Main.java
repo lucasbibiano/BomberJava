@@ -14,8 +14,9 @@ public class Main {
 		
 		p.placeBomb();
 		
-		p.setX(1);
-		p.setY(1);
+		p.setX(8);
+		p.setY(3);
+		
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {

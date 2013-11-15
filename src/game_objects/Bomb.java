@@ -1,7 +1,6 @@
 package game_objects;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 import behavior.Explodable;
 import thread.SharedThreadPool;
