@@ -1,5 +1,6 @@
 package main;
 
+import loader.ImgLoader;
 import constants.Constants.Movement;
 import core.Game;
 import game_objects.Map;
@@ -30,20 +31,27 @@ public class Main{
 		p.setX(1);
 		p.setY(1);
 		
-		p.move(Movement.DOWN);
-		System.out.println(p.toString());
+		ImgLoader img = new ImgLoader();
+		img.load_map();
+		img.load_bomb();
+		img.load_players();
+		if(img.map_sprite == null)
+			System.out.println("NULL");
+		else
+			System.out.println("carregou mapa");
 		
-		p.move(Movement.LEFT);
-		System.out.println(p.toString());
+		if(img.bomb_spritesheet == null)
+			System.out.println("NULL");
+		else
+			System.out.println("carregou bomba");
 		
-		p.move(Movement.RIGHT);
-		System.out.println(p.toString());
-		
-		p.move(Movement.UP);
-		System.out.println(p.toString());
-		
-		p.move(Movement.DOWN);		
-		System.out.println(p.toString());
+		if(img.player1_spritesheet != null && 
+				img.player2_spritesheet != null && 
+				img.player3_spritesheet != null &&
+				img.player4_spritesheet != null)
+			System.out.println("NULL");
+		else
+			System.out.println("carregou jogadores");
 		
 	};
 }
