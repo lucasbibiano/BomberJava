@@ -1,7 +1,6 @@
 package graphics.input;
 
-import graphics.core.GameGraphics;
-
+import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
@@ -12,10 +11,19 @@ public class GameKeyListener implements KeyListener {
 	
 	public GameKeyListener() {
 		keys = new HashMap<Integer, Boolean>();
+		keys.put(KeyEvent.VK_LEFT, false);
+		keys.put(KeyEvent.VK_RIGHT, false);
+		keys.put(KeyEvent.VK_UP, false);
+		keys.put(KeyEvent.VK_DOWN, false);
+		keys.put(KeyEvent.VK_SPACE, false);
+		keys.put(KeyEvent.VK_ESCAPE, false);
 	}
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+			System.exit(0);
+		
 		keys.put(e.getKeyCode(), true);
 	}
 
@@ -26,7 +34,6 @@ public class GameKeyListener implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		//nothing
 	}
 	
 	public boolean isPressed(int key) {

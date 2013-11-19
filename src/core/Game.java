@@ -1,7 +1,6 @@
 package core;
 
 import constants.Constants.Movement;
-import game_objects.GameObject;
 import game_objects.Map;
 import game_objects.Player;
 
@@ -33,4 +32,5 @@ public class Game {
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
+	
 }

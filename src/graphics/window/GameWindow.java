@@ -1,33 +1,29 @@
 package graphics.window;
 
 import game_objects.Map;
-import game_objects.Player;
 import graphics.core.GameGraphics;
 import graphics.input.GameKeyListener;
 import graphics.objects.Drawable;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-import constants.Constants.Movement;
-
 import core.Game;
 
 public class GameWindow extends JFrame implements Drawable {
+	
+	private int width = 640;
+	private int height = 640;
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5593300460625998050L;
 	
-	private Graphics g;
 	private BufferStrategy bStrategy;
 	private GameGraphics game;
 	
@@ -37,19 +33,23 @@ public class GameWindow extends JFrame implements Drawable {
 
 	private int fps;
 	
+	private GameKeyListener keyListener;
+	
 	public GameWindow(final GameGraphics game) {
 		super("Bomber Java");
+		setUndecorated(true);
 		
 		this.game = game;
 		
-		setPreferredSize(new Dimension(500, 500));
+		setPreferredSize(new Dimension(640, 640));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);
 		
-		KeyListener keyListener = new GameKeyListener();
+		keyListener = new GameKeyListener();
 		
 		addKeyListener(keyListener);
+		game.setKeyInput(keyListener);
 		
 		createBufferStrategy(2);
 		bStrategy = this.getBufferStrategy();
@@ -113,13 +113,13 @@ public class GameWindow extends JFrame implements Drawable {
 	}
 
 	private void doGameUpdates(double delta) {
-		
+		game.update(delta);
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.clearRect(0, 0, 500, 500);
+		g2d.clearRect(0, 0, 640, 640);
 		
 		game.draw(g2d);
 	}

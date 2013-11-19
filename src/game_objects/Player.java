@@ -7,6 +7,10 @@ import core.Game;
 import events.ExplodeEvent;
 
 public class Player extends GameObject implements Explodable {
+	private static final long BOMB_COOLDOWN_NS = 1000000000;
+	
+	private long lastBomb = 0;
+	
 	private int number;
 	
 	private int speed;
@@ -28,7 +32,14 @@ public class Player extends GameObject implements Explodable {
 		trepassable = true;
 	}
 	
-	public void placeBomb() {		
+	public void placeBomb() {
+		long now = System.nanoTime();
+		
+		if (now - lastBomb < BOMB_COOLDOWN_NS)
+			return;
+		
+		lastBomb = System.nanoTime();
+		
 		Bomb bombToAdd = new Bomb(getGame(), flameLevel, this);
 		
 		map.addObject(bombToAdd);
