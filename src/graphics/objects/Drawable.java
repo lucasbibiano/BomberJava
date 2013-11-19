@@ -1,4 +1,4 @@
-package behavior;
+package graphics.objects;
 
 import java.awt.Graphics;
 
