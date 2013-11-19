@@ -24,6 +24,8 @@ public class Player extends GameObject implements Explodable {
 		flameLevel = 1;
 		maxBombs = 1;
 		activeBombs = 0;
+		
+		trepassable = true;
 	}
 	
 	public void placeBomb() {		

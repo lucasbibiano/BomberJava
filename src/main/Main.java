@@ -2,6 +2,7 @@ package main;
 
 import constants.Constants.Movement;
 import core.Game;
+import game_objects.Block;
 import game_objects.Map;
 import game_objects.Player;
 import graphics.window.GameWindow;
@@ -11,24 +12,24 @@ public class Main{
 	public static void main(String[] args) {		
 		Map map = new Map();
 		Game game = new Game(map);
-		Player p = new Player(game, 0, 0, 1);
-		p.setX(10);
-		p.setY(15);
+		Player p = new Player(game, 2, 2, 1);
 		
-		p.placeBomb();
+		Block b = new Block(game, 2, 3);
+		Block c = new Block(game, 2, 1);
+		Block d = new Block(game, 1, 2);
+		Block e = new Block(game, 3, 2);
 		
-		p.setX(11);
-		p.setY(15);
+		map.addObject(b);
+		map.addObject(c);
+		map.addObject(d);
+		map.addObject(e);
 		
-		p.placeBomb();
+		//p.placeBomb();
 
 		
+		//p.placeBomb();	
 		
-		p.setX(0);
-		p.setY(0);
-			
-		p.setX(1);
-		p.setY(1);
+		System.out.println(p.toString());
 		
 		p.move(Movement.DOWN);
 		System.out.println(p.toString());

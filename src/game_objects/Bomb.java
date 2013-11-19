@@ -13,7 +13,7 @@ public class Bomb extends GameObject implements Explodable {
 	
 	private int flameLevel;
 	private int playerNumber;
-
+	
 	private boolean exploded;
 	
 	public Bomb(Game game, int flameLevel, Player player) {
