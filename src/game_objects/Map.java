@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public class Map {
 	private ArrayList<GameObject> objects;
 	
-	private int xLimit = 100;
-	private int yLimit = 100;
+	private int xLimit = 20;
+	private int yLimit = 20;
 	
 	private GameObject[][] matrix;
 	
 	public Map() {
-		matrix = new GameObject[100][100];
+		matrix = new GameObject[yLimit][xLimit];
 		objects = new ArrayList<GameObject>();
 	}
 	

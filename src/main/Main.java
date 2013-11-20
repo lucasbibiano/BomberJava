@@ -1,15 +1,16 @@
 package main;
 
+import loader.ImgLoader;
 import constants.Constants.Movement;
 import core.Game;
 import game_objects.Block;
 import game_objects.Map;
 import game_objects.Player;
+import graphics.window.GameWindow;
 
 public class Main{
 	
-	public static void main(String[] args) {
-		
+	public static void main(String[] args) {		
 		Map map = new Map();
 		Game game = new Game(map);
 		Player p = new Player(game, 2, 2, 1);
@@ -31,20 +32,27 @@ public class Main{
 		
 		System.out.println(p.toString());
 		
-		p.move(Movement.DOWN);
-		System.out.println(p.toString());
+		ImgLoader img = new ImgLoader();
+		img.load_map();
+		img.load_bomb();
+		img.load_players();
+		if(img.map_sprite == null)
+			System.out.println("NULL");
+		else
+			System.out.println("carregou mapa");
 		
-		p.move(Movement.LEFT);
-		System.out.println(p.toString());
+		if(img.bomb_spritesheet == null)
+			System.out.println("NULL");
+		else
+			System.out.println("carregou bomba");
 		
-		p.move(Movement.RIGHT);
-		System.out.println(p.toString());
-		
-		p.move(Movement.UP);
-		System.out.println(p.toString());
-		
-		p.move(Movement.DOWN);		
-		System.out.println(p.toString());
+		if(img.player1_spritesheet != null && 
+				img.player2_spritesheet != null && 
+				img.player3_spritesheet != null &&
+				img.player4_spritesheet != null)
+			System.out.println("NULL");
+		else
+			System.out.println("carregou jogadores");
 		
 	};
 }
