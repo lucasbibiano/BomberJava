@@ -79,7 +79,7 @@ public class GameWindow extends JFrame implements Drawable {
 			// update our FPS counter if a second has passed since
 			// we last recorded
 			if (lastFpsTime >= 1000000000) {
-				System.out.println("(FPS: " + fps + ")");
+				//System.out.println("(FPS: " + fps + ")");
 				lastFpsTime = 0;
 				fps = 0;
 			}
