@@ -5,10 +5,10 @@ import game_objects.Player;
 
 import java.awt.Graphics;
 
+import static constants.Constants.*;
+
 public class MapGraphics extends GameObjectGraphics<Map> {
 
-	private static final int TILESIZE = 32;
-	
 	private Map map;
 
 	public MapGraphics(Map map) {
