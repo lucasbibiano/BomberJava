@@ -32,6 +32,35 @@ public class Bomb extends GameObject implements Explodable {
 		
 		exploded = true;
 		
+		//expand horizontally
+		for (int i = getX() - flameLevel; i <= getX() + flameLevel; i++){
+			if (i < 0 || i >= map.getxLimit())
+				break;
+			else{
+				GameObject affected = map.objAt(i, getY());
+				
+				if (affected != null && affected instanceof Explodable) {
+					((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
+					break;
+				}
+			}
+			
+		}
+		
+		//expand vertically
+		for (int i = getY() - flameLevel; i <= getY() + flameLevel; i++){
+			if (i < 0 || i >= map.getyLimit())
+				break;
+			else{
+				GameObject affected = map.objAt(i, getY());
+				
+				if (affected != null && affected instanceof Explodable) {
+					((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
+					break;
+				}
+			}
+		}
+		/*
 		//up
 		for (int i = 1; i <= flameLevel; i++) {
 			GameObject affected = map.objAt(getX() - i, getY());
@@ -70,7 +99,7 @@ public class Bomb extends GameObject implements Explodable {
 				((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
 				break;
 			}
-		}
+		}*/
 	}
 
 	public void start() {
