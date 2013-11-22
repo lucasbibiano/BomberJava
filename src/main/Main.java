@@ -11,8 +11,8 @@ import graphics.window.GameWindow;
 public class Main{
 	
 	public static void main(String[] args) {		
-		Map map = new Map();
-		Game game = new Game(map);
+		Game game = new Game();
+		Map map = new Map(game);
 		Player p = new Player(game, 2, 2, 1);
 		
 		Block b = new Block(game, 2, 3);

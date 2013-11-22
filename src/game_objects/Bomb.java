@@ -71,6 +71,8 @@ public class Bomb extends GameObject implements Explodable {
 				break;
 			}
 		}
+		
+		getGame().removeObject(this);
 	}
 
 	public void start() {

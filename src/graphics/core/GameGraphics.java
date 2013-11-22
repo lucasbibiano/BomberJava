@@ -6,9 +6,14 @@ import java.awt.event.KeyEvent;
 
 import constants.Constants.Movement;
 
+import game_objects.Bomb;
+import game_objects.GameObject;
+import game_objects.Player;
 import graphics.input.GameKeyListener;
 import graphics.objects.Drawable;
+import graphics.objects.GameObjectGraphics;
 import graphics.objects.MapGraphics;
+import graphics.objects.PlayerGraphics;
 import core.Game;
 
 public class GameGraphics implements Drawable {
@@ -25,6 +30,16 @@ public class GameGraphics implements Drawable {
 	@Override
 	public void draw(Graphics g) {
 		mapGraphics.draw(g);
+		
+		for (GameObject obj: game.getObjects()) {
+			GameObjectGraphics objGraphics = null;
+			
+			if (obj instanceof Player)
+				objGraphics = new PlayerGraphics(obj);
+			
+			if (objGraphics != null)
+				objGraphics.draw(g);
+		}
 	}
 	
 	public void update(double delta) {

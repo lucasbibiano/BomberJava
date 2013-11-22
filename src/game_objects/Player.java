@@ -2,9 +2,11 @@ package game_objects;
 
 
 import behavior.Explodable;
+import behavior.MoveListener;
 import constants.Constants.Movement;
 import core.Game;
 import events.ExplodeEvent;
+import events.MoveEvent;
 
 public class Player extends GameObject implements Explodable {
 	private static final long BOMB_COOLDOWN_NS = 1000000000;
@@ -21,6 +23,8 @@ public class Player extends GameObject implements Explodable {
 	
 	private boolean dead;
 	
+	private MoveListener moveListener;
+	
 	public Player(Game game, int x, int y, int number) {
 		super(game, x, y);
 		this.number = number;
@@ -30,6 +34,7 @@ public class Player extends GameObject implements Explodable {
 		activeBombs = 0;
 		
 		trepassable = true;
+		this.moveListener = game.getMap();
 	}
 	
 	public void placeBomb() {
@@ -42,7 +47,7 @@ public class Player extends GameObject implements Explodable {
 		
 		Bomb bombToAdd = new Bomb(getGame(), flameLevel, this);
 		
-		map.addObject(bombToAdd);
+		getGame().addObject(bombToAdd);
 		bombToAdd.start();
 	}
 	
@@ -60,25 +65,7 @@ public class Player extends GameObject implements Explodable {
 		return dead;
 	}
 	
-	public void changePosition(int x, int y){		
-		map.moveObject(this, x, y);
-	}
-	
-	public void changeY(int y){
-		if (isValidY(y)){
-			changePosition(getX(), y);
-			setY(y);
-		}		
-	}
-	
-	public void changeX(int x){
-		if (isValidX(x)){ 
-			changePosition(x, getY());	
-			setX(x);
-		}
-	}
-	
-	public void move(Movement move){		
+	public void move(Movement move) {		
 		int x = this.getX();
 		int y = this.getY();
 		
@@ -94,10 +81,25 @@ public class Player extends GameObject implements Explodable {
 		else if(move == Movement.RIGHT){
 			changeX(x+1);
 		}
+		
+		if (x != getX() || y != getY())
+			moveListener.objectMoved(new MoveEvent(x, y, this));
 	}
 	
+	private void changeY(int y) {
+		if (getGame().getMap().isValid(getX(), y)) {
+			this.setY(y);
+		}
+	}
+	
+	private void changeX(int x) {
+		if (getGame().getMap().isValid(x, getY())) {
+			this.setX(x);
+		}
+	}
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return "Player> " + super.toString() + "; playerNumber: " +
 				number;
 	}

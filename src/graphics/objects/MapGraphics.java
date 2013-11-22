@@ -1,31 +1,24 @@
 package graphics.objects;
 
 import game_objects.Map;
-import game_objects.Player;
 
 import java.awt.Graphics;
 
 import static constants.Constants.*;
 
-public class MapGraphics extends GameObjectGraphics<Map> {
+public class MapGraphics implements Drawable {
 
 	private Map map;
 
 	public MapGraphics(Map map) {
-		super(map);
-		this.map = super.getObject();
+		this.map = map;
 	}
 	
 	@Override
 	public void draw(Graphics g) {
-		for (int i = 0; i < map.getyLimit(); i++) {
-			for (int j = 0; j < map.getxLimit(); j++) {
+		for (int i = 0; i < map.getHeight(); i++) {
+			for (int j = 0; j < map.getWidth(); j++) {
 				g.drawRect(i * TILESIZE, j * TILESIZE, TILESIZE, TILESIZE);
-				
-				if (map.objAt(i, j) instanceof Player) {
-					PlayerGraphics playerGraphics = new PlayerGraphics((Player) map.objAt(i, j));
-					playerGraphics.draw(g);
-				}
 			}
 		}
 	}

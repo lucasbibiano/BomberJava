@@ -1,6 +1,7 @@
 package graphics.window;
 
 import game_objects.Map;
+import game_objects.Player;
 import graphics.core.GameGraphics;
 import graphics.input.GameKeyListener;
 import graphics.objects.Drawable;
@@ -125,7 +126,12 @@ public class GameWindow extends JFrame implements Drawable {
 	}
 	
 	public static void main(String[] args) {
-		Game game = new Game(new Map());
+		Game game = new Game();
+		Map map = new Map(game);
+		
+		Player player = new Player(game, 10, 10, 1);
+		game.setPlayer(player);
+		game.addObject(player);
 		
 		GameWindow window = new GameWindow(new GameGraphics(game));
 		window.gameLoop();

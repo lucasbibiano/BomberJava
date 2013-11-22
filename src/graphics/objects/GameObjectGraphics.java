@@ -2,21 +2,15 @@ package graphics.objects;
 
 import game_objects.GameObject;
 
-import java.awt.Graphics;
+public abstract class GameObjectGraphics implements Drawable {
 
-public class GameObjectGraphics<T> implements Drawable {
-
-	private T object;
+	private GameObject object;
 	
-	public GameObjectGraphics(T obj) {
+	public GameObjectGraphics(GameObject obj) {
 		this.object = obj;
 	}
-	
-	@Override
-	public void draw(Graphics g) {
-	}
 
-	public T getObject() {
+	public GameObject getObject() {
 		return object;
 	}
 }

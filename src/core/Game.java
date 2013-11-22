@@ -1,20 +1,19 @@
 package core;
 
+import java.util.ArrayList;
+
 import constants.Constants.Movement;
+import game_objects.GameObject;
 import game_objects.Map;
 import game_objects.Player;
 
 public class Game {
-	private Map map;
 	private Player player;
+	private ArrayList<GameObject> objects;
+	private Map map;
 
-	public Game(Map map) {
-		this.map = map;
-		player = new Player(this, 10, 10, 1);
-	}
-	
-	public Map getMap() {
-		return map;
+	public Game() {
+		objects = new ArrayList<GameObject>();
 	}
 	
 	public void update(double delta) {
@@ -33,4 +32,25 @@ public class Game {
 		this.player = player;
 	}
 	
+	public ArrayList<GameObject> getObjects() {
+		return objects;
+	}
+
+	public Map getMap() {
+		return map;
+	}
+
+	public void setMap(Map map) {
+		this.map = map;
+	}
+
+	public void addObject(GameObject obj) {
+		objects.add(obj);
+		map.addObject(obj);
+	}
+	
+	public void removeObject(GameObject obj) {
+		objects.remove(obj);
+		map.removeObject(obj);
+	}
 }

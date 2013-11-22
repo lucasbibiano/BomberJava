@@ -10,13 +10,10 @@ public abstract class GameObject {
 	
 	private Game game;
 	
-	Map map;
-	
 	public GameObject(Game game, int x, int y) {
 		this.game = game;
 		this.x = x;
 		this.y = y;
-		this.map = game.getMap();
 	}
 
 	@Override
@@ -43,17 +40,9 @@ public abstract class GameObject {
 	public void setY(int y) {
 		this.y = y;
 	}
-	
-	public boolean isValidY(int y){
-		return (-1 < y && y < map.getyLimit() && map.isMovableSpace(getX(), y));
-	}
+
 	
 	public boolean isTrepassable() {		
 		return trepassable;
 	}
-
-	public boolean isValidX(int x){
-		return (-1 < x && x < map.getxLimit() && map.isMovableSpace(x, getY()));
-	}
-	
 }

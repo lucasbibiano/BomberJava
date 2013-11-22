@@ -1,46 +1,69 @@
 package game_objects;
 
-import java.util.ArrayList;
+import core.Game;
 
-public class Map {
-	private ArrayList<GameObject> objects;
+import events.MoveEvent;
+
+import behavior.MoveListener;
+
+public class Map implements MoveListener {
+	private int width = 20;
+	private int height = 20;
 	
-	private int xLimit = 20;
-	private int yLimit = 20;
+	private boolean[][] matrix;
 	
-	private GameObject[][] matrix;
+	private Game game;
 	
-	public Map() {
-		matrix = new GameObject[yLimit][xLimit];
-		objects = new ArrayList<GameObject>();
+	public Map(Game game) {
+		matrix = new boolean[height][width];
+		this.game = game;
+		game.setMap(this);
+		
+		for (int i = 0; i < width; i++)
+			for (int j = 0; j < height; j++)
+				matrix[j][i] = true; 
 	}
 	
 	public void addObject(GameObject obj) {
-		objects.add(obj);
-		matrix[obj.getX()][obj.getY()] = obj;
+		matrix[obj.getY()][obj.getX()] = obj.isTrepassable();
+	}
+	
+	public void removeObject(GameObject obj) {
+		matrix[obj.getY()][obj.getX()] = objAt(obj.getX(), obj.getY()) == null;
 	}
 	
 	public GameObject objAt(int x, int y) {
-		if (!(x >= 0 && x < 100 && y >= 0 && y < 100))
-			return null;
+		for (GameObject obj: game.getObjects()) {
+			if (obj.getX() == x && obj.getY() == y)
+				return obj;
+		}
 		
-		return matrix[x][y];
+		return null;
 	}
 	
-	public void moveObject(GameObject obj, int x, int y){
-		matrix[obj.getX()][obj.getY()] = null;
-		matrix[x][y] = obj;
+	public int getWidth(){
+		return width;
 	}
 	
-	public int getxLimit(){
-		return xLimit;
-	}
-	
-	public int getyLimit(){
-		return yLimit;
+	public int getHeight(){
+		return height;
 	}
 	
 	public boolean isMovableSpace(int x, int y){
-		return ((objAt(x, y) != null && objAt(x, y).isTrepassable()) || objAt(x, y) == null);
+		return matrix[y][x];
+	}
+	
+	public boolean isValid(int x, int y) {
+		return (-1 < y && y < getHeight() && -1 < x && x < getWidth() && isMovableSpace(x, y));
+	}
+
+	@Override
+	public void objectMoved(MoveEvent e) {
+		int lastY = e.getLastY();
+		int lastX = e.getLastX();
+		GameObject objMoved = e.getObjMoved();
+		
+		matrix[lastY][lastX] = objAt(lastX, lastY) == null;
+		matrix[objMoved.getY()][objMoved.getX()] = objMoved.isTrepassable();
 	}
 }
