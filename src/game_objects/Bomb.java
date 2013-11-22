@@ -32,43 +32,32 @@ public class Bomb extends GameObject implements Explodable {
 		
 		exploded = true;
 		
-		//up
-		for (int i = 1; i <= flameLevel; i++) {
-			GameObject affected = map.objAt(getX() - i, getY());
-			
-			if (affected != null && affected instanceof Explodable) {
-				((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
-				break;
+		//expand horizontally
+		for (int i = getX() - flameLevel; i <= getX() + flameLevel; i++){
+			if (i < 0 || i >= map.getxLimit())
+				System.out.println("Position outside map borders - IGNORE");
+			else{
+				GameObject affected = map.objAt(i, getX());
+				System.out.println("exploding at x: "+i+" y: "+getY());
+				if (affected != null && affected instanceof Explodable) {
+					((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
+					break;
+				}
 			}
+			
 		}
 		
-		//down
-		for (int i = 1; i <= flameLevel; i++) {
-			GameObject affected = map.objAt(getX() + i, getY());
-			
-			if (affected != null && affected instanceof Explodable) {
-				((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
-				break;
-			}
-		}
-		
-		//left
-		for (int i = 1; i <= flameLevel; i++) {
-			GameObject affected = map.objAt(getX(), getY() + i);
-			
-			if (affected != null && affected instanceof Explodable) {
-				((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
-				break;
-			}
-		}
-		
-		//right
-		for (int i = 1; i <= flameLevel; i++) {
-			GameObject affected = map.objAt(getX(), getY() - i);
-			
-			if (affected != null && affected instanceof Explodable) {
-				((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
-				break;
+		//expand vertically
+		for (int i = getY() - flameLevel; i <= getY() + flameLevel; i++){
+			if (i < 0 || i >= map.getyLimit())
+				System.out.println("Position outside map borders - IGNORE");
+			else{
+				GameObject affected = map.objAt(i, getY());
+				System.out.println("exploding at x: "+getX()+" y: "+ i);
+				if (affected != null && affected instanceof Explodable) {
+					((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
+					break;
+				}
 			}
 		}
 		
