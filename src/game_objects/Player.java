@@ -44,12 +44,13 @@ public class Player extends GameObject implements Explodable {
 			return;
 		
 		lastBomb = System.nanoTime();
-		
+				
 		Bomb bombToAdd = new Bomb(getGame(), flameLevel, this);
 		
 		if (getGame().getMap().isMovableSpace(bombToAdd.getX(), bombToAdd.getY())) {
 			getGame().addObject(bombToAdd);
 			bombToAdd.start();
+			System.out.println("Placed bomb at " + bombToAdd.getX() + ", " + bombToAdd.getY());
 		}
 	}
 	
@@ -108,7 +109,6 @@ public class Player extends GameObject implements Explodable {
 
 	@Override
 	public void update(double delta) {
-		// TODO Auto-generated method stub
 		
 	}
 }
