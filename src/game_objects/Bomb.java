@@ -1,5 +1,9 @@
 package game_objects;
 
+import static constants.Constants.TILESIZE;
+
+import java.awt.Graphics2D;
+
 import behavior.Explodable;
 import thread.SharedThreadPool;
 import core.Game;
@@ -32,20 +36,36 @@ public class Bomb extends GameObject implements Explodable {
 		
 		setExploded(true);
 		for(int i = 1; i <= flameLevel; i++){
-			if (i < 0 || i >= map.getWidth() || i>= map.getHeight())
-				System.out.println("Position outside map borders - IGNORE");
+			if (getX() - i < 0 || getX() + i >= map.getWidth())
+				System.out.println("Position outside map width borders - IGNORE");
 			else{
-				GameObject affected = map.objAt(i, getY());
-				System.out.println("exploding at x: "+i+" y: "+getY());
+				GameObject affected = map.objAt(getX() - i, getY());
+				System.out.println("exploding at x: "+(getX()-i)+" y: "+getY());
 				if (affected != null && affected instanceof Explodable) {
 					((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
 				}
-				affected = map.objAt(getX(), i);
-				System.out.println("exploding at x: "+getX()+" y: "+ i);
+				affected = map.objAt(getX() + i, getY());
+				System.out.println("exploding at x: "+(getX()+i)+" y: "+getY());
 				if (affected != null && affected instanceof Explodable) {
 					((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
 				}
 			}
+			
+			if (getY() - i < 0 || getY() + i >= map.getHeight())
+				System.out.println("Position outside map height borders - IGNORE");
+			else{
+				GameObject affected = map.objAt(getX() , getY() - i);
+				System.out.println("exploding at x: "+(getX())+" y: "+(getY()-i));
+				if (affected != null && affected instanceof Explodable) {
+					((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
+				}
+				affected = map.objAt(getX() , getY()+ i);
+				System.out.println("exploding at x: "+(getX())+" y: "+(getY()+i));
+				if (affected != null && affected instanceof Explodable) {
+					((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
+				}
+			}
+			
 		}
 		/*
 		//expand horizontally
