@@ -54,7 +54,7 @@ public class Bomb extends GameObject implements Explodable {
 			}
 			
 			if (getY() - i < 0 || getY() + i >= map.getHeight())
-				System.out.println("Position outside map height borders - IGNORE");
+				System.out.println("Position outside map h borders - IGNORE");
 			else{
 				GameObject affected = map.objAt(getX() , getY() - i);
 				System.out.println("exploding at x: "+(getX())+" y: "+(getY()-i));
