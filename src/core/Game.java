@@ -20,8 +20,8 @@ public class Game {
 	}
 	
 	public void receivedInput(Movement mov) {
-		player.setX((player.getX() + 50) % 500);
-		player.setY((player.getY() + 50) % 500);
+		player.setX((player.getX() + 50));
+		player.setY((player.getY() + 50));
 	}
 
 	public Player getPlayer() {
