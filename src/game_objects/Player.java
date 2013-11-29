@@ -9,7 +9,7 @@ import events.ExplodeEvent;
 import events.MoveEvent;
 
 public class Player extends GameObject implements Explodable {
-	private static final long BOMB_COOLDOWN_NS = 1000000000;
+	private static final long BOMB_COOLDOWN_NS = 0;
 	
 	private long lastBomb = 0;
 	
@@ -44,12 +44,13 @@ public class Player extends GameObject implements Explodable {
 			return;
 		
 		lastBomb = System.nanoTime();
-		
+				
 		Bomb bombToAdd = new Bomb(getGame(), flameLevel, this);
 		
 		if (getGame().getMap().isMovableSpace(bombToAdd.getX(), bombToAdd.getY())) {
 			getGame().addObject(bombToAdd);
 			bombToAdd.start();
+			System.out.println("Placed bomb at " + bombToAdd.getX() + ", " + bombToAdd.getY());
 		}
 	}
 	
@@ -108,7 +109,6 @@ public class Player extends GameObject implements Explodable {
 
 	@Override
 	public void update(double delta) {
-		// TODO Auto-generated method stub
 		
 	}
 }

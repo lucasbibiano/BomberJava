@@ -29,7 +29,8 @@ public class Map implements MoveListener {
 	}
 	
 	public void removeObject(GameObject obj) {
-		matrix[obj.getY()][obj.getX()] = objAt(obj.getX(), obj.getY()) == null;
+		GameObject last = objAt(obj.getX(), obj.getY());
+		matrix[obj.getY()][obj.getX()] = last == null || last.isTrepassable();
 	}
 	
 	public GameObject objAt(int x, int y) {
