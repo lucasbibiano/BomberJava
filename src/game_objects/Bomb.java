@@ -40,7 +40,7 @@ public class Bomb extends GameObject implements Explodable {
 		System.out.println("exploding at x: "+getX()+" y: "+getY());
 		
 		for(int i = 1; i <= flameLevel; i++){
-			if (getX() - i < 0 || getX() + i >= map.getWidth())
+			if (getX() - i < 0)
 				System.out.println("Position outside map width borders - IGNORE");
 			else{
 				affected = map.objAt(getX() - i, getY());
@@ -48,6 +48,10 @@ public class Bomb extends GameObject implements Explodable {
 				if (affected != null && affected instanceof Explodable) {
 					((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
 				}
+			}
+			if(getX() + i >= map.getWidth())
+				System.out.println("Position outside map width borders - IGNORE");
+			else{
 				affected = map.objAt(getX() + i, getY());
 				System.out.println("exploding at x: "+(getX()+i)+" y: "+getY());
 				if (affected != null && affected instanceof Explodable) {
@@ -55,7 +59,7 @@ public class Bomb extends GameObject implements Explodable {
 				}
 			}
 			
-			if (getY() - i < 0 || getY() + i >= map.getHeight())
+			if (getY() - i < 0 )
 				System.out.println("Position outside map h borders - IGNORE");
 			else{
 				affected = map.objAt(getX() , getY() - i);
@@ -63,6 +67,10 @@ public class Bomb extends GameObject implements Explodable {
 				if (affected != null && affected instanceof Explodable) {
 					((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
 				}
+			}
+			if(getY() + i >= map.getHeight())
+				System.out.println("Position outside map h borders - IGNORE");
+			else{
 				affected = map.objAt(getX() , getY()+ i);
 				System.out.println("exploding at x: "+(getX())+" y: "+(getY()+i));
 				if (affected != null && affected instanceof Explodable) {
