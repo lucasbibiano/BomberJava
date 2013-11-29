@@ -1,20 +1,16 @@
 package graphics.core;
 
+import game_objects.GameObject;
+import graphics.input.GameKeyListener;
+import graphics.objects.Drawable;
+import graphics.objects.MapGraphics;
+
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 import constants.Constants.Movement;
-
-import game_objects.Bomb;
-import game_objects.GameObject;
-import game_objects.Player;
-import graphics.input.GameKeyListener;
-import graphics.objects.BombGraphics;
-import graphics.objects.Drawable;
-import graphics.objects.GameObjectGraphics;
-import graphics.objects.MapGraphics;
-import graphics.objects.PlayerGraphics;
 import core.Game;
 
 public class GameGraphics implements Drawable {
@@ -33,15 +29,19 @@ public class GameGraphics implements Drawable {
 		mapGraphics.draw(g);
 		
 		for (GameObject obj: game.getObjects()) {
-			GameObjectGraphics objGraphics = null;
+			Method method;
 			
-			if (obj instanceof Player)
-				objGraphics = new PlayerGraphics(obj);
-			else if (obj instanceof Bomb)
-				objGraphics = new BombGraphics(obj);
+			try {
+				Class<?> clazz = Class.forName("graphics.objects." + obj.getClass().getSimpleName() + "Graphics");
+				Constructor<?> constructor = clazz.getConstructor(GameObject.class);
+				Object instance = constructor.newInstance(obj);
+				
+				method = clazz.getDeclaredMethod("draw", new Class[] { Graphics.class });
+				method.invoke(instance, new Object[] { g });
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			
-			if (objGraphics != null)
-				objGraphics.draw(g);
 		}
 	}
 	
