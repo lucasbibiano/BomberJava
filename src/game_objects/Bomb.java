@@ -13,6 +13,8 @@ public class Bomb extends GameObject implements Explodable {
 	
 	protected static final int TIME_TO_EXPLODE = 3000;
 	
+	private boolean started;
+	
 	private int flameLevel;
 	private int playerNumber;
 	
@@ -98,23 +100,7 @@ public class Bomb extends GameObject implements Explodable {
 	}
 
 	public void start() {
-		final Bomb bomb = this;
-		
-		SharedThreadPool.getES().execute(new Runnable() {
-			
-			@Override
-			public void run() {
-				System.out.println("Starting " + bomb);
-				
-				try {
-					Thread.sleep(TIME_TO_EXPLODE);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				
-				bomb.explode();
-			}
-		});
+		started = true;
 	}
 	
 	@Override
