@@ -19,18 +19,18 @@ public class Bomb extends GameObject implements Explodable {
 		this.flameLevel = flameLevel;
 		this.playerNumber = player.getNumber();
 		
-		exploded = false;
+		setExploded(false);
 	}
 	
 	public void explode() {
-		if (exploded)
+		if (isExploded())
 			return;
 		
 		System.out.println("Exploding " + this);
 		
 		Map map = getGame().getMap();
 		
-		exploded = true;
+		setExploded(true);
 		
 		//expand horizontally
 		for (int i = getX() - flameLevel; i <= getX() + flameLevel; i++){
@@ -57,8 +57,8 @@ public class Bomb extends GameObject implements Explodable {
 				}
 			}
 		}
-		
 		getGame().removeObject(this);
+
 	}
 
 	public void start() {
@@ -88,7 +88,15 @@ public class Bomb extends GameObject implements Explodable {
 	}
 
 	@Override
-	public void exploded(ExplodeEvent e) {
+	public synchronized void exploded(ExplodeEvent e) {
 		explode();
+	}
+
+	public boolean isExploded() {
+		return exploded;
+	}
+
+	public void setExploded(boolean exploded) {
+		this.exploded = exploded;
 	}
 }

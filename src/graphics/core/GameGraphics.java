@@ -10,6 +10,7 @@ import game_objects.Bomb;
 import game_objects.GameObject;
 import game_objects.Player;
 import graphics.input.GameKeyListener;
+import graphics.objects.BombGraphics;
 import graphics.objects.Drawable;
 import graphics.objects.GameObjectGraphics;
 import graphics.objects.MapGraphics;
@@ -36,6 +37,8 @@ public class GameGraphics implements Drawable {
 			
 			if (obj instanceof Player)
 				objGraphics = new PlayerGraphics(obj);
+			else if (obj instanceof Bomb)
+				objGraphics = new BombGraphics(obj);
 			
 			if (objGraphics != null)
 				objGraphics.draw(g);

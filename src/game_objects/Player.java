@@ -9,7 +9,7 @@ import events.ExplodeEvent;
 import events.MoveEvent;
 
 public class Player extends GameObject implements Explodable {
-	private static final long BOMB_COOLDOWN_NS = 1000000000;
+	private static final long BOMB_COOLDOWN_NS = 0;
 	
 	private long lastBomb = 0;
 	
