@@ -1,17 +1,13 @@
 package game_objects;
 
-import static constants.Constants.TILESIZE;
-
-import java.awt.Graphics2D;
-
 import behavior.Explodable;
-import thread.SharedThreadPool;
 import core.Game;
 import events.ExplodeEvent;
 
 public class Bomb extends GameObject implements Explodable {
 	
-	protected static final int TIME_TO_EXPLODE = 3000;
+	protected static final double TIME_TO_EXPLODE = 3000;
+	private double timeElapsed; 
 	
 	private boolean started;
 	
@@ -24,6 +20,7 @@ public class Bomb extends GameObject implements Explodable {
 		super(game, player.getX(), player.getY());
 		this.flameLevel = flameLevel;
 		this.playerNumber = player.getNumber();
+		timeElapsed = 0;
 		
 		setExploded(false);
 	}
@@ -110,7 +107,7 @@ public class Bomb extends GameObject implements Explodable {
 	}
 
 	@Override
-	public synchronized void exploded(ExplodeEvent e) {
+	public void exploded(ExplodeEvent e) {
 		explode();
 	}
 
@@ -120,5 +117,15 @@ public class Bomb extends GameObject implements Explodable {
 
 	public void setExploded(boolean exploded) {
 		this.exploded = exploded;
+	}
+
+	@Override
+	public void update(double delta) {
+		if (started) {
+			timeElapsed += delta * 28;
+			
+			if (timeElapsed >= TIME_TO_EXPLODE)
+				explode();
+		}
 	}
 }

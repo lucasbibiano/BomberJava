@@ -60,6 +60,8 @@ public class GameGraphics implements Drawable {
 		
 		if (keyListener.isPressed(KeyEvent.VK_SPACE))
 			game.getPlayer().placeBomb();
+		
+		game.update(delta);
 	}
 	
 	public void setKeyInput(GameKeyListener keyListener) {

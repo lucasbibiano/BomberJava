@@ -105,4 +105,10 @@ public class Player extends GameObject implements Explodable {
 		return "Player> " + super.toString() + "; playerNumber: " +
 				number;
 	}
+
+	@Override
+	public void update(double delta) {
+		// TODO Auto-generated method stub
+		
+	}
 }

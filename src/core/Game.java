@@ -17,6 +17,10 @@ public class Game {
 	}
 	
 	public void update(double delta) {
+		for (int i = 0; i < objects.size(); i++) { 
+			GameObject obj = objects.get(i);
+			obj.update(delta);
+		}
 	}
 	
 	public void receivedInput(Movement mov) {
@@ -53,4 +57,5 @@ public class Game {
 		objects.remove(obj);
 		map.removeObject(obj);
 	}
+	
 }

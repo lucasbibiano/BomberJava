@@ -36,4 +36,10 @@ public class Block extends GameObject implements Explodable {
 		this.powerUp = powerUp;
 	}
 
+	@Override
+	public void update(double delta) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

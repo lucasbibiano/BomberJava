@@ -45,4 +45,6 @@ public abstract class GameObject {
 	public boolean isTrepassable() {		
 		return trepassable;
 	}
+	
+	public abstract void update(double delta);
 }

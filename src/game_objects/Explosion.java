@@ -8,4 +8,10 @@ public class Explosion extends GameObject {
 		super(game, x, y);
 	}
 
+	@Override
+	public void update(double delta) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
