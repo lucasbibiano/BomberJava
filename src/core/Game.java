@@ -19,6 +19,10 @@ public class Game {
 	public void update(double delta) {
 		for (int i = 0; i < objects.size(); i++) { 
 			GameObject obj = objects.get(i);
+			
+			if (obj.isToRemove())
+				objects.remove(i);
+			
 			obj.update(delta);
 		}
 	}

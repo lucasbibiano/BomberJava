@@ -17,7 +17,6 @@ public class Block extends GameObject implements Explodable {
 	public void exploded(ExplodeEvent e) {
 		if (!explodable)
 			return;
-		
 	}
 
 	public boolean isExplodable() {
@@ -38,8 +37,6 @@ public class Block extends GameObject implements Explodable {
 
 	@Override
 	public void update(double delta) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

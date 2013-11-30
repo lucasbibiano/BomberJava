@@ -13,7 +13,6 @@ public class Explosion extends GameObject {
 		super(game, x, y);
 		this.trepassable = true;
 		this.bomb = bomb;
-		setToRemove(false);
 	}
 
 	@Override
@@ -23,7 +22,6 @@ public class Explosion extends GameObject {
 		if (timeElapsed <= LIFETIME)
 			getGame().getMap().bomb(bomb, getX(), getY());
 		else {
-			System.out.println("hue");
 			setToRemove(true);
 		}
 	}
