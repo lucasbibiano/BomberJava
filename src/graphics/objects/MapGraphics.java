@@ -18,7 +18,7 @@ public class MapGraphics implements Drawable {
 	public void draw(Graphics g) {
 		for (int i = 0; i < map.getHeight(); i++) {
 			for (int j = 0; j < map.getWidth(); j++) {
-				g.drawRect(i * TILESIZE, j * TILESIZE, TILESIZE, TILESIZE);
+				g.drawRect(j * TILESIZE, i * TILESIZE, TILESIZE, TILESIZE);
 			}
 		}
 	}

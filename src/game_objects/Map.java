@@ -1,5 +1,8 @@
 package game_objects;
 
+import java.util.ArrayList;
+
+import constants.Constants;
 import core.Game;
 
 import events.MoveEvent;
@@ -7,8 +10,8 @@ import events.MoveEvent;
 import behavior.MoveListener;
 
 public class Map implements MoveListener {
-	private int width = 20;
-	private int height = 20;
+	private int width = Constants.WIDTH;
+	private int height = Constants.HEIGHT;
 	
 	private boolean[][] matrix;
 	
@@ -32,17 +35,28 @@ public class Map implements MoveListener {
 	}
 	
 	public void removeObject(GameObject obj) {
-		GameObject last = objAt(obj.getX(), obj.getY());
-		matrix[obj.getY()][obj.getX()] = last == null || last.isTrepassable();
+		GameObject[] last = objAt(obj.getX(), obj.getY());
+		matrix[obj.getY()][obj.getX()] = last.length == 0|| allTrespassable(last);
 	}
 	
-	public GameObject objAt(int x, int y) {
-		for (GameObject obj: game.getObjects()) {
-			if (obj.getX() == x && obj.getY() == y)
-				return obj;
+	private boolean allTrespassable(GameObject[] last) {
+		for (GameObject obj: last) {
+			if (!obj.isTrepassable())
+				return false;
 		}
 		
-		return null;
+		return true;
+	}
+
+	public GameObject[] objAt(int x, int y) {
+		ArrayList<GameObject> objects = new ArrayList<GameObject>();
+		
+		for (GameObject obj: game.getObjects()) {
+			if (obj.getX() == x && obj.getY() == y)
+				objects.add(obj);
+		}
+		
+		return objects.toArray(new GameObject[objects.size()]);
 	}
 	
 	public int getWidth(){
@@ -66,8 +80,9 @@ public class Map implements MoveListener {
 		int lastY = e.getLastY();
 		int lastX = e.getLastX();
 		GameObject objMoved = e.getObjMoved();
-		
-		matrix[lastY][lastX] = objAt(lastX, lastY) == null;
+		GameObject[] last = objAt(lastX, lastY);
+				
+		matrix[lastY][lastX] = last.length == 0 || allTrespassable(last);
 		matrix[objMoved.getY()][objMoved.getX()] = objMoved.isTrepassable();
 	}
 }

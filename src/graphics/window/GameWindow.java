@@ -9,17 +9,20 @@ import graphics.objects.Drawable;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
+import constants.Constants;
+
 import core.Game;
+
+import static constants.Constants.TILESIZE;;
 
 public class GameWindow extends JFrame implements Drawable {
 	
-	private int width = 640;
-	private int height = 640;
+	private int width = TILESIZE * Constants.WIDTH;
+	private int height = TILESIZE * Constants.HEIGHT;
 	
 	/**
 	 * 
@@ -43,7 +46,7 @@ public class GameWindow extends JFrame implements Drawable {
 		
 		this.game = game;
 		
-		setPreferredSize(new Dimension(640, 640));
+		setPreferredSize(new Dimension(width, height));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);
@@ -121,7 +124,7 @@ public class GameWindow extends JFrame implements Drawable {
 	@Override
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.clearRect(0, 0, 640, 640);
+		g2d.clearRect(0, 0, width, height);
 		
 		game.draw(g2d);
 	}

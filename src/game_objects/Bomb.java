@@ -35,11 +35,7 @@ public class Bomb extends GameObject implements Explodable {
 		
 		setExploded(true);
 		
-		GameObject affected = map.objAt(getX(), getY());
-		
-		if (affected != null && affected instanceof Explodable) {
-			((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
-		}
+		checkPosition(getX(), getY());
 	
 		getGame().addObject(new Explosion(getGame(), getX() , getY()));
 		
@@ -51,23 +47,14 @@ public class Bomb extends GameObject implements Explodable {
 			else{
 				getGame().addObject(new Explosion(getGame(), getX() - i, getY()));
 
-				affected = map.objAt(getX() - i, getY());
-				System.out.println("exploding at x: "+(getX()-i)+" y: "+getY());
-				
-				if (affected != null && affected instanceof Explodable) {
-					((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
-				}
+				checkPosition(getX() - i, getY());
 			}
 			if(getX() + i >= map.getWidth())
 				System.out.println("Position outside map width borders - IGNORE");
 			else{
 				getGame().addObject(new Explosion(getGame(), getX() + i, getY()));
 
-				affected = map.objAt(getX() + i, getY());
-				System.out.println("exploding at x: "+(getX()+i)+" y: "+getY());
-				if (affected != null && affected instanceof Explodable) {
-					((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
-				}
+				checkPosition(getX() + i, getY());
 			}
 			
 			if (getY() - i < 0 )
@@ -75,22 +62,14 @@ public class Bomb extends GameObject implements Explodable {
 			else{
 				getGame().addObject(new Explosion(getGame(), getX() , getY() - i));
 
-				affected = map.objAt(getX() , getY() - i);
-				System.out.println("exploding at x: "+(getX())+" y: "+(getY()-i));
-				if (affected != null && affected instanceof Explodable) {
-					((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
-				}
+				checkPosition(getX(), getY() - i);
 			}
 			if(getY() + i >= map.getHeight())
 				System.out.println("Position outside map h borders - IGNORE");
 			else{
-				getGame().addObject(new Explosion(getGame(), getX() , getY()+ i));
+				getGame().addObject(new Explosion(getGame(), getX() , getY() + i));
 				
-				affected = map.objAt(getX() , getY()+ i);
-				System.out.println("exploding at x: "+(getX())+" y: "+(getY()+i));
-				if (affected != null && affected instanceof Explodable) {
-					((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
-				}
+				checkPosition(getX(), getY() + i);
 			}
 			
 		}
@@ -122,6 +101,16 @@ public class Bomb extends GameObject implements Explodable {
 		}*/
 		getGame().removeObject(this);
 
+	}
+
+	private void checkPosition(int x, int y) {
+		GameObject[] affecteds = getGame().getMap().objAt(x, y);
+		
+		for (GameObject affected: affecteds) {
+			if (affected instanceof Explodable) {
+				((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
+			}
+		}
 	}
 
 	public void start() {
