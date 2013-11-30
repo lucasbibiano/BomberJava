@@ -22,24 +22,11 @@ public class Game {
 			
 			if (obj.isToRemove())
 				objects.remove(i);
-			
-			obj.update(delta);
+			else
+				obj.update(delta);
 		}
 	}
-	
-	public void receivedInput(Movement mov) {
-		player.setX((player.getX() + 50));
-		player.setY((player.getY() + 50));
-	}
 
-	public Player getPlayer() {
-		return player;
-	}
-
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
-	
 	public ArrayList<GameObject> getObjects() {
 		return objects;
 	}
@@ -60,6 +47,14 @@ public class Game {
 	public void removeObject(GameObject obj) {
 		objects.remove(obj);
 		map.removeObject(obj);
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 	
 }

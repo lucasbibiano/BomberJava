@@ -46,18 +46,19 @@ public class GameGraphics implements Drawable {
 	}
 	
 	public void update(double delta) {
-		if (keyListener.isPressed(KeyEvent.VK_LEFT))
-			game.getPlayer().move(Movement.LEFT);
-		
-		if (keyListener.isPressed(KeyEvent.VK_RIGHT))
-			game.getPlayer().move(Movement.RIGHT);
+		boolean[] moves = new boolean[4];
 		
 		if (keyListener.isPressed(KeyEvent.VK_UP))
-			game.getPlayer().move(Movement.UP);
-		
+			moves[0] = true;
 		if (keyListener.isPressed(KeyEvent.VK_DOWN))
-			game.getPlayer().move(Movement.DOWN);
+			moves[1] = true;
+		if (keyListener.isPressed(KeyEvent.VK_LEFT))
+			moves[2] = true;
+		if (keyListener.isPressed(KeyEvent.VK_RIGHT))
+			moves[3] = true;
 		
+		game.getPlayer().move(moves);
+
 		if (keyListener.isPressed(KeyEvent.VK_SPACE))
 			game.getPlayer().placeBomb();
 		
