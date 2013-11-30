@@ -6,11 +6,11 @@ public class Explosion extends GameObject {
 
 	public Explosion(Game game, int x, int y) {
 		super(game, x, y);
+		this.trepassable = true;
 	}
 
 	@Override
 	public void update(double delta) {
-		// TODO Auto-generated method stub
 		
 	}
 

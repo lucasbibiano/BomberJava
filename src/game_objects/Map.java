@@ -25,6 +25,9 @@ public class Map implements MoveListener {
 	}
 	
 	public void addObject(GameObject obj) {
+		if (obj.getX() > width || obj.getY() > height || obj.getX() < 0 || obj.getY() < 0) {
+			return;
+		}
 		matrix[obj.getY()][obj.getX()] = obj.isTrepassable();
 	}
 	

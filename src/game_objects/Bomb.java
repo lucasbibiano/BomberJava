@@ -36,15 +36,24 @@ public class Bomb extends GameObject implements Explodable {
 		setExploded(true);
 		
 		GameObject affected = map.objAt(getX(), getY());
-		((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
+		
+		if (affected != null && affected instanceof Explodable) {
+			((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
+		}
+	
+		getGame().addObject(new Explosion(getGame(), getX() , getY()));
+		
 		System.out.println("exploding at x: "+getX()+" y: "+getY());
 		
 		for(int i = 1; i <= flameLevel; i++){
 			if (getX() - i < 0)
 				System.out.println("Position outside map width borders - IGNORE");
 			else{
+				getGame().addObject(new Explosion(getGame(), getX() - i, getY()));
+
 				affected = map.objAt(getX() - i, getY());
 				System.out.println("exploding at x: "+(getX()-i)+" y: "+getY());
+				
 				if (affected != null && affected instanceof Explodable) {
 					((Explodable) affected).exploded(new ExplodeEvent(playerNumber));
 				}
@@ -52,6 +61,8 @@ public class Bomb extends GameObject implements Explodable {
 			if(getX() + i >= map.getWidth())
 				System.out.println("Position outside map width borders - IGNORE");
 			else{
+				getGame().addObject(new Explosion(getGame(), getX() + i, getY()));
+
 				affected = map.objAt(getX() + i, getY());
 				System.out.println("exploding at x: "+(getX()+i)+" y: "+getY());
 				if (affected != null && affected instanceof Explodable) {
@@ -62,6 +73,8 @@ public class Bomb extends GameObject implements Explodable {
 			if (getY() - i < 0 )
 				System.out.println("Position outside map h borders - IGNORE");
 			else{
+				getGame().addObject(new Explosion(getGame(), getX() , getY() - i));
+
 				affected = map.objAt(getX() , getY() - i);
 				System.out.println("exploding at x: "+(getX())+" y: "+(getY()-i));
 				if (affected != null && affected instanceof Explodable) {
@@ -71,6 +84,8 @@ public class Bomb extends GameObject implements Explodable {
 			if(getY() + i >= map.getHeight())
 				System.out.println("Position outside map h borders - IGNORE");
 			else{
+				getGame().addObject(new Explosion(getGame(), getX() , getY()+ i));
+				
 				affected = map.objAt(getX() , getY()+ i);
 				System.out.println("exploding at x: "+(getX())+" y: "+(getY()+i));
 				if (affected != null && affected instanceof Explodable) {
