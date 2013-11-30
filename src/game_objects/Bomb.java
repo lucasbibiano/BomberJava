@@ -37,7 +37,7 @@ public class Bomb extends GameObject implements Explodable {
 		
 		checkPosition(getX(), getY());
 	
-		getGame().addObject(new Explosion(getGame(), getX() , getY()));
+		getGame().addObject(new Explosion(getGame(), getX() , getY(), this));
 		
 		System.out.println("exploding at x: "+getX()+" y: "+getY());
 		
@@ -45,14 +45,14 @@ public class Bomb extends GameObject implements Explodable {
 			if (getX() - i < 0)
 				System.out.println("Position outside map width borders - IGNORE");
 			else{
-				getGame().addObject(new Explosion(getGame(), getX() - i, getY()));
+				getGame().addObject(new Explosion(getGame(), getX() - i, getY(), this));
 
 				checkPosition(getX() - i, getY());
 			}
 			if(getX() + i >= map.getWidth())
 				System.out.println("Position outside map width borders - IGNORE");
 			else{
-				getGame().addObject(new Explosion(getGame(), getX() + i, getY()));
+				getGame().addObject(new Explosion(getGame(), getX() + i, getY(), this));
 
 				checkPosition(getX() + i, getY());
 			}
@@ -60,14 +60,14 @@ public class Bomb extends GameObject implements Explodable {
 			if (getY() - i < 0 )
 				System.out.println("Position outside map h borders - IGNORE");
 			else{
-				getGame().addObject(new Explosion(getGame(), getX() , getY() - i));
+				getGame().addObject(new Explosion(getGame(), getX() , getY() - i, this));
 
 				checkPosition(getX(), getY() - i);
 			}
 			if(getY() + i >= map.getHeight())
 				System.out.println("Position outside map h borders - IGNORE");
 			else{
-				getGame().addObject(new Explosion(getGame(), getX() , getY() + i));
+				getGame().addObject(new Explosion(getGame(), getX() , getY() + i, this));
 				
 				checkPosition(getX(), getY() + i);
 			}
@@ -101,6 +101,10 @@ public class Bomb extends GameObject implements Explodable {
 		}*/
 		getGame().removeObject(this);
 
+	}
+
+	public int getPlayerNumber() {
+		return playerNumber;
 	}
 
 	private void checkPosition(int x, int y) {

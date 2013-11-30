@@ -20,6 +20,9 @@ public class ExplosionGraphics extends GameObjectGraphics {
 
 	@Override
 	public void draw(Graphics g) {
+		if (expĺosion.isToRemove())
+			return;
+		
 		Graphics2D g2d = (Graphics2D) g;
 		
 		g2d.setColor(Color.red);

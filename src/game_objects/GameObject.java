@@ -7,6 +7,7 @@ public abstract class GameObject {
 	private int y;
 	
 	protected boolean trepassable = false;
+	private boolean toRemove = true;
 	
 	private Game game;
 	
@@ -47,4 +48,12 @@ public abstract class GameObject {
 	}
 	
 	public abstract void update(double delta);
+
+	public boolean isToRemove() {
+		return toRemove;
+	}
+
+	public void setToRemove(boolean toRemove) {
+		this.toRemove = toRemove;
+	}
 }

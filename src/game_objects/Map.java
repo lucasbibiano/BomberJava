@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import constants.Constants;
 import core.Game;
 
+import events.ExplodeEvent;
 import events.MoveEvent;
 
+import behavior.Explodable;
 import behavior.MoveListener;
 
 public class Map implements MoveListener {
@@ -84,5 +86,15 @@ public class Map implements MoveListener {
 				
 		matrix[lastY][lastX] = last.length == 0 || allTrespassable(last);
 		matrix[objMoved.getY()][objMoved.getX()] = objMoved.isTrepassable();
+	}
+
+	public void bomb(Bomb bomb, int x, int y) {
+		GameObject[] affecteds = objAt(x, y);
+		
+		for (GameObject affected: affecteds) {
+			if (affected instanceof Explodable) {
+				((Explodable) affected).exploded(new ExplodeEvent(bomb.getPlayerNumber()));
+			}
+		}
 	}
 }
