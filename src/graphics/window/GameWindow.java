@@ -1,11 +1,13 @@
 package graphics.window;
 
+import game_objects.Block;
 import game_objects.Map;
 import game_objects.Player;
 import graphics.core.GameGraphics;
 import graphics.input.GameKeyListener;
 import graphics.objects.Drawable;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -124,9 +126,11 @@ public class GameWindow extends JFrame implements Drawable {
 	@Override
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.clearRect(0, 0, width, height);
-		
-		game.draw(g2d);
+		//g2d.clearRect(0, 0, width, height);
+		g2d.setColor(Color.green);
+		g2d.fillRect(0, 0, width, height);
+		g2d.setColor(Color.black);
+		game.draw(g2d);		
 	}
 	
 	public static void main(String[] args) {
@@ -136,6 +140,17 @@ public class GameWindow extends JFrame implements Drawable {
 		Player player = new Player(game, 10, 10, 1);
 		game.setPlayer(player);
 		game.addObject(player);
+		
+		Block b = new Block(game, 5, 5);
+		Block c = new Block(game, 5, 6);
+		Block d = new Block(game, 5, 7);
+		Block e = new Block(game, 5, 8);
+		
+		game.addObject(b);
+		game.addObject(c);
+		game.addObject(d);
+		game.addObject(e);
+		
 		
 		GameWindow window = new GameWindow(new GameGraphics(game));
 		window.gameLoop();
