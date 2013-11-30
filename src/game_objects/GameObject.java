@@ -7,7 +7,7 @@ public abstract class GameObject {
 	private int y;
 	
 	protected boolean trepassable = false;
-	private boolean toRemove = true;
+	private boolean toRemove;
 	
 	private Game game;
 	
@@ -15,6 +15,7 @@ public abstract class GameObject {
 		this.game = game;
 		this.x = x;
 		this.y = y;
+		setToRemove(false);
 	}
 
 	@Override
@@ -42,7 +43,6 @@ public abstract class GameObject {
 		this.y = y;
 	}
 
-	
 	public boolean isTrepassable() {		
 		return trepassable;
 	}

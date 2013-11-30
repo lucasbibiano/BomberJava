@@ -5,7 +5,7 @@ public interface Constants {
 	public static final int TILESIZE = 32;
 	
 	public static enum Movement {
-	    UP, DOWN, LEFT, RIGHT
+	    UP, DOWN, LEFT, RIGHT, NONE
 	}
 	
 	public static final boolean GRID = true;

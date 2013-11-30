@@ -10,6 +10,9 @@ import events.MoveEvent;
 
 public class Player extends GameObject implements Explodable {
 	private static final long BOMB_COOLDOWN_NS = 0;
+	private static final double MOVE_TIMEOUT = 50;
+	
+	private double moveTimer = 0;
 	
 	private long lastBomb = 0;
 	
@@ -20,11 +23,17 @@ public class Player extends GameObject implements Explodable {
 	private int flameLevel;
 	private int maxBombs;
 	private int activeBombs;
-	
-	private boolean dead;
-	
+		
 	private MoveListener moveListener;
 	
+	//STATES
+	private boolean movingLeft;
+	private boolean movingRight;
+	private boolean movingUp;
+	private boolean movingDown;
+	private boolean stopped;
+	private boolean dead;
+
 	public Player(Game game, int x, int y, int number) {
 		super(game, x, y);
 		this.number = number;
@@ -68,37 +77,11 @@ public class Player extends GameObject implements Explodable {
 		return dead;
 	}
 	
-	public void move(Movement move) {		
-		int x = this.getX();
-		int y = this.getY();
-		
-		if (move == Movement.UP){
-			changeY(y-1);
-		}
-		else if(move == Movement.DOWN){
-			changeY(y+1);
-		}
-		else if(move == Movement.LEFT){
-			changeX(x-1);
-		}
-		else if(move == Movement.RIGHT){
-			changeX(x+1);
-		}
-		
-		if (x != getX() || y != getY())
-			moveListener.objectMoved(new MoveEvent(x, y, this));
-	}
-	
-	private void changeY(int y) {
-		if (getGame().getMap().isValid(getX(), y)) {
-			this.setY(y);
-		}
-	}
-	
-	private void changeX(int x) {
-		if (getGame().getMap().isValid(x, getY())) {
-			this.setX(x);
-		}
+	public void move(boolean[] move) {
+		movingUp = move[0];
+		movingDown = move[1];
+		movingLeft = move[2];
+		movingRight = move[3];
 	}
 
 	@Override
@@ -109,6 +92,47 @@ public class Player extends GameObject implements Explodable {
 
 	@Override
 	public void update(double delta) {
+		int x = getX(), y = getY();
 		
+		if (movingDown) {
+			y += 1;
+		} 
+		
+		if (movingUp) {
+			y -= 1;
+		} 
+		
+		if (movingLeft) {
+			x -= 1;
+		} 
+		
+		if (movingRight) {
+			x += 1;
+		} 
+
+		if (stopped){
+			moveTimer = 0;
+			return;
+		}
+		
+		moveTimer = (moveTimer + 28 * delta);
+		checkMove(x, y);
+	}
+
+	private void checkMove(int x, int y) {
+		int lastX = this.getX();
+		int lastY = this.getY();
+		
+		if (moveTimer > MOVE_TIMEOUT) {
+			moveTimer %= MOVE_TIMEOUT;
+			
+			if (getGame().getMap().isValid(x, y)) {
+				setX(x);
+				setY(y);
+				
+				if (x != lastX && y != lastY)
+					moveListener.objectMoved(new MoveEvent(lastX, lastY, this));
+			}
+		}
 	}
 }
