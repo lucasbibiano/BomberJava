@@ -22,10 +22,10 @@ public class BlockGraphics extends GameObjectGraphics {
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		
-		g2d.setColor(Color.cyan);
+		g2d.setColor(new Color(105,112,96));
 		
 		g2d.fillRect(block.getX() * TILESIZE, block.getY() * TILESIZE, 32, 32);
-		g2d.setColor(Color.cyan);
+		g2d.setColor(new Color(105,112,96));
 		
 	}
 }
