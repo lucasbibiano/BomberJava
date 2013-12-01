@@ -40,7 +40,7 @@ public class Player extends GameObject implements Explodable {
 		super(game, x, y);
 		this.number = number;
 		
-		flameLevel = 1;
+		flameLevel = 3;
 		maxBombs = 1;
 		activeBombs = 0;
 		
