@@ -16,6 +16,7 @@ public class GameKeyListener implements KeyListener {
 		keys.put(KeyEvent.VK_DOWN, false);
 		keys.put(KeyEvent.VK_SPACE, false);
 		keys.put(KeyEvent.VK_ESCAPE, false);
+		keys.put(KeyEvent.VK_SHIFT, false);
 	}
 	
 	@Override

@@ -10,11 +10,13 @@ import events.MoveEvent;
 
 public class Player extends GameObject implements Explodable {
 	private static final long BOMB_COOLDOWN_NS = 0;
+	private static final long BLOCK_COOLDOWN_NS = 0;
 	private static final double MOVE_TIMEOUT = 50;
 	
 	private double moveTimer = 0;
 	
 	private long lastBomb = 0;
+	private long lastBlock = 0;
 	
 	private int number;
 	
@@ -60,6 +62,22 @@ public class Player extends GameObject implements Explodable {
 			getGame().addObject(bombToAdd);
 			bombToAdd.start();
 			System.out.println("Placed bomb at " + bombToAdd.getX() + ", " + bombToAdd.getY());
+		}
+	}
+	
+	public void placeBlock() {
+		long now = System.nanoTime();
+		
+		if (now - lastBlock < BLOCK_COOLDOWN_NS)
+			return;
+		
+		lastBlock = System.nanoTime();
+				
+		Block blockToAdd = new Block(getGame(), this.getX(), this.getY());
+		
+		if (getGame().getMap().isMovableSpace(blockToAdd.getX(), blockToAdd.getY())) {
+			getGame().addObject(blockToAdd);
+			System.out.println("Placed block at " + blockToAdd.getX() + ", " + blockToAdd.getY());
 		}
 	}
 	
