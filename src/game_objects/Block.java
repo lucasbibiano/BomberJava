@@ -16,7 +16,8 @@ public class Block extends GameObject implements Explodable {
 	@Override
 	public void exploded(ExplodeEvent e) {
 		if (!explodable)
-			return;
+			getGame().removeObject(this);
+		return;
 	}
 
 	public boolean isExplodable() {
