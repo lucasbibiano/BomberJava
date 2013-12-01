@@ -6,6 +6,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import game_objects.Block;
 import game_objects.GameObject;
@@ -22,10 +27,18 @@ public class BlockGraphics extends GameObjectGraphics {
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		
-		g2d.setColor(new Color(105,112,96));
+		BufferedImage img = null;
+		String url = System.getProperty("user.dir");
+		url+="/src/sprites/block.gif";
 		
-		g2d.fillRect(block.getX() * TILESIZE, block.getY() * TILESIZE, 32, 32);
-		g2d.setColor(new Color(105,112,96));
+		try {
+		    img = ImageIO.read(new File(url));
+		} catch (IOException e) {
+		}
+		
+		g2d.drawImage(img, block.getX() * TILESIZE, block.getY() * TILESIZE, null);
+		
+		//g2d.setColor(new Color(105,112,96));
 		
 	}
 }
