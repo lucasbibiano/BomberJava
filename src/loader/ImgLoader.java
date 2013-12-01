@@ -50,7 +50,7 @@ public class ImgLoader {
 	
 	public void load_players(){
 		try {
-			java.net.URL urlPlayer1 = this.getClass().getResource("../sprites/character1.PNG");
+			java.net.URL urlPlayer1 = this.getClass().getResource("./../sprites/character1.PNG");
 			player1_spritesheet = ImageIO.read(urlPlayer1);
 			
 			java.net.URL urlPlayer2 = this.getClass().getResource("../sprites/character2.PNG");
