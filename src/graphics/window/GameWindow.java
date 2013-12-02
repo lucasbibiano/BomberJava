@@ -1,6 +1,6 @@
 package graphics.window;
 
-import game_objects.Block;
+import static constants.Constants.TILESIZE;
 import game_objects.Map;
 import game_objects.Player;
 import graphics.core.GameGraphics;
@@ -17,52 +17,49 @@ import javax.swing.JFrame;
 
 import constants.Constants;
 
-import core.Game;
-
-import static constants.Constants.TILESIZE;;
+;
 
 public class GameWindow extends JFrame implements Drawable {
-	
+
 	private int width = TILESIZE * Constants.WIDTH;
 	private int height = TILESIZE * Constants.HEIGHT;
-	
+
 	/**
-	 * 
-	 */
+   * 
+   */
 	private static final long serialVersionUID = 5593300460625998050L;
-	
+
 	private BufferStrategy bStrategy;
 	private GameGraphics game;
-	
+
 	private boolean gameRunning = true;
 
 	private long lastFpsTime;
 
 	private int fps;
-	
+
 	private GameKeyListener keyListener;
-	
+
 	public GameWindow(final GameGraphics game) {
 		super("Bomber Java");
 		setUndecorated(true);
-		
+
 		this.game = game;
-		
+
 		setPreferredSize(new Dimension(width, height));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pack();
 		setVisible(true);
-		
+
 		keyListener = new GameKeyListener();
-		
+
 		addKeyListener(keyListener);
 		game.setKeyInput(keyListener);
-		
+
 		createBufferStrategy(2);
 		bStrategy = this.getBufferStrategy();
 	}
 
-	
 	public void gameLoop() {
 		long lastLoopTime = System.nanoTime();
 		final int TARGET_FPS = 28;
@@ -85,7 +82,7 @@ public class GameWindow extends JFrame implements Drawable {
 			// update our FPS counter if a second has passed since
 			// we last recorded
 			if (lastFpsTime >= 1000000000) {
-				//System.out.println("(FPS: " + fps + ")");
+				// System.out.println("(FPS: " + fps + ")");
 				lastFpsTime = 0;
 				fps = 0;
 			}
@@ -93,9 +90,9 @@ public class GameWindow extends JFrame implements Drawable {
 			// update the game logic
 			doGameUpdates(delta);
 
-			//draw on memory
+			// draw on memory
 			draw(bStrategy.getDrawGraphics());
-			
+
 			// draw everyting
 			render();
 
@@ -126,33 +123,32 @@ public class GameWindow extends JFrame implements Drawable {
 	@Override
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		//g2d.clearRect(0, 0, width, height);
+		// g2d.clearRect(0, 0, width, height);
 		g2d.setColor(Color.green);
 		g2d.fillRect(0, 0, width, height);
 		g2d.setColor(Color.black);
-		game.draw(g2d);		
+		game.draw(g2d);
 	}
-	
+
 	public static void main(String[] args) {
-		Game game = new Game();
+		GameGraphics game = null;
+
+		try {
+			game = new GameGraphics();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			System.exit(1);
+		}
+
+		
 		Map map = new Map(game);
+		game.setMap(map);
 		
 		Player player = new Player(game, 10, 10, 1);
 		game.setPlayer(player);
 		game.addObject(player);
-		
-		Block b = new Block(game, 5, 5);
-		Block c = new Block(game, 5, 6);
-		Block d = new Block(game, 5, 7);
-		Block e = new Block(game, 5, 8);
-		
-		game.addObject(b);
-		game.addObject(c);
-		game.addObject(d);
-		game.addObject(e);
-		
-		
-		GameWindow window = new GameWindow(new GameGraphics(game));
+
+		GameWindow window = new GameWindow(game);
 		window.gameLoop();
 	}
 }
