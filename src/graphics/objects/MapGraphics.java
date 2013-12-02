@@ -25,7 +25,7 @@ public class MapGraphics implements Drawable {
 		g.setColor(Color.BLACK);
 		BufferedImage img = null;
 		String url = System.getProperty("user.dir");
-		url+="/src/sprites/grass.png";
+		url+="/src/sprites/grass.jpeg";
 		
 		try {
 		    img = ImageIO.read(new File(url));
