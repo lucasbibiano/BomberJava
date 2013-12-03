@@ -1,38 +1,43 @@
 package core;
 
-import java.io.IOException;
-import java.net.Socket;
+import game_objects.GameObject;
+import game_objects.Map;
+import game_objects.Player;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 import networking.Message;
-import networking.client.PlayerClient;
-
-import constants.Constants.Movement;
-import game_objects.GameObject;
-import game_objects.Map;
-import game_objects.Player;
 
 public abstract class Game {
 	private Player player;
 	private ArrayList<GameObject> objects;
 	private Map map;
 	
-	private LinkedList<Message> messages = new LinkedList<Message>();
+	private LinkedList<Message> messages;
 
-	private PlayerClient client;
-	
-	public Game(Socket socket) {
+	public Game() {
 		objects = new ArrayList<GameObject>();
-		try {
-			client = new PlayerClient(socket, this);
-			client.listen();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		messages = new LinkedList<Message>();
 	}
 
 	public void update(double delta) {
+		for (int i = 0; i < messages.size(); i++) {
+			Message msg = messages.get(i);
+			
+			this.getPlayer().move(msg.moves);
+			
+			if (msg.placeBomb) {
+				this.getPlayer().placeBomb();
+			}
+			
+			if (msg.placeBlock) {
+				this.getPlayer().placeBlock();
+			}
+		}
+		
+		messages.clear();
+		
 		for (int i = 0; i < objects.size(); i++) {
 			GameObject obj = objects.get(i);
 
@@ -75,9 +80,5 @@ public abstract class Game {
 
 	public void process(Message msg) {
 		messages.add(msg);
-	}
-
-	public PlayerClient getClient() {
-		return client;
 	}
 }

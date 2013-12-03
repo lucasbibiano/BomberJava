@@ -5,8 +5,6 @@ import java.net.ServerSocket;
 
 import thread.SharedThreadPool;
 
-import core.Game;
-
 public class Server {
 	private PlayerConnection[] players;
 	private int numOfPlayers;

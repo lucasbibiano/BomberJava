@@ -14,6 +14,8 @@ import java.lang.reflect.Method;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import behavior.MessageListener;
+
 import networking.Message;
 
 import static constants.Constants.*;
@@ -24,8 +26,10 @@ public class GameGraphics extends Game implements Drawable {
 
 	private GameKeyListener keyListener;
 	
+	private MessageListener messageListener;
+	
 	public GameGraphics() throws UnknownHostException, IOException {
-		super(new Socket(HOST, PORT));
+		super();
 	}
 
 	@Override
@@ -72,29 +76,26 @@ public class GameGraphics extends Game implements Drawable {
 		if (keyListener.isPressed(KeyEvent.VK_RIGHT))
 			moves[3] = true;
 
-		this.getPlayer().move(moves);
-		
 		message.moves = moves;
 		message.placeBomb = keyListener.isPressed(KeyEvent.VK_SPACE);
 		message.placeBlock = keyListener.isPressed(KeyEvent.VK_SHIFT);
 		message.playerNumber = getPlayer().getNumber();
 
-		if (keyListener.isPressed(KeyEvent.VK_SPACE))
-			this.getPlayer().placeBomb();
-		if (keyListener.isPressed(KeyEvent.VK_SHIFT))
-			this.getPlayer().placeBlock();
-
-		try {			System.out.println("hue");
-
-			getClient().send(message);
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (messageListener != null) {
+			messageListener.messageReceived(message);
+			super.update(delta);
 		}
-		
-		super.update(delta);
 	}
 
 	public void setKeyInput(GameKeyListener keyListener) {
 		this.keyListener = keyListener;
+	}
+
+	public MessageListener getMessageListener() {
+		return messageListener;
+	}
+
+	public void setMessageListener(MessageListener messageListener) {
+		this.messageListener = messageListener;
 	}
 }

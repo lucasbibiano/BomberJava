@@ -17,6 +17,7 @@ public class PlayerConnection {
 		output = new ObjectOutputStream(socket.getOutputStream());
 		output.flush();
 		input = new ObjectInputStream(socket.getInputStream());
+		listen();
 	}
 
 	public void listen() {
@@ -27,10 +28,10 @@ public class PlayerConnection {
 				while (true) {
 					try {
 						Message msg = (Message) input.readObject();
-						System.out.println(msg.playerNumber);
+						System.out.println(msg);
 						send(msg);
 					} catch (IOException | ClassNotFoundException e) {
-						e.printStackTrace();
+						break;
 					}
 				}
 			}

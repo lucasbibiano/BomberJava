@@ -1,6 +1,9 @@
 package graphics.window;
 
+import static constants.Constants.HOST;
+import static constants.Constants.PORT;
 import static constants.Constants.TILESIZE;
+import game_objects.GameObject;
 import game_objects.Map;
 import game_objects.Player;
 import graphics.core.GameGraphics;
@@ -12,8 +15,14 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
+
+import networking.client.PlayerClient;
 
 import constants.Constants;
 
@@ -123,14 +132,14 @@ public class GameWindow extends JFrame implements Drawable {
 	@Override
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		// g2d.clearRect(0, 0, width, height);
+
 		g2d.setColor(Color.green);
 		g2d.fillRect(0, 0, width, height);
 		g2d.setColor(Color.black);
 		game.draw(g2d);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnknownHostException, IOException {
 		GameGraphics game = null;
 
 		try {
@@ -139,7 +148,12 @@ public class GameWindow extends JFrame implements Drawable {
 			e1.printStackTrace();
 			System.exit(1);
 		}
-
+		
+		PlayerClient client;
+		
+		client = new PlayerClient(new Socket(HOST, PORT), game);
+		client.listen();
+		game.setMessageListener(client);
 		
 		Map map = new Map(game);
 		game.setMap(map);

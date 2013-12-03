@@ -5,11 +5,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import behavior.MessageListener;
+
 import networking.Message;
 import thread.SharedThreadPool;
 import core.Game;
 
-public class PlayerClient {
+public class PlayerClient implements MessageListener {
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
 	
@@ -20,7 +22,6 @@ public class PlayerClient {
 		output.flush();
 		input = new ObjectInputStream(socket.getInputStream());
 		this.game = game;
-		System.out.println("hue");
 	}
 
 	public void listen() {
@@ -31,6 +32,7 @@ public class PlayerClient {
 				while (true) {
 					try {
 						Message msg = (Message) input.readObject();
+						System.out.println(msg);
 						game.process(msg);
 					} catch (IOException | ClassNotFoundException e) {
 						e.printStackTrace();
@@ -43,5 +45,14 @@ public class PlayerClient {
 	public void send(Message msg) throws IOException {
 		output.writeObject(msg);
 		output.flush();
+	}
+
+	@Override
+	public void messageReceived(Message msg) {
+		try {
+			send(msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
