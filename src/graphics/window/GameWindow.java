@@ -159,8 +159,7 @@ public class GameWindow extends JFrame implements Drawable {
 		game.setMap(map);
 		
 		Player player = new Player(game, 10, 10, 1);
-		game.setPlayer(player);
-		game.addObject(player);
+		game.newPlayer(player);
 
 		GameWindow window = new GameWindow(game);
 		window.gameLoop();

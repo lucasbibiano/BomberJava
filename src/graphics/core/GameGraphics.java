@@ -36,7 +36,7 @@ public class GameGraphics extends Game implements Drawable {
 	public void draw(Graphics g) {
 		mapGraphics.draw(g);
 
-		for (int i = getObjects().size() - 1; i >= 0; --i) {
+/*		for (int i = getObjects().size() - 1; i >= 0; --i) {
 			GameObject obj = getObjects().get(i);
 			Method method;
 
@@ -53,7 +53,7 @@ public class GameGraphics extends Game implements Drawable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 
 	@Override
@@ -79,11 +79,11 @@ public class GameGraphics extends Game implements Drawable {
 		message.moves = moves;
 		message.placeBomb = keyListener.isPressed(KeyEvent.VK_SPACE);
 		message.placeBlock = keyListener.isPressed(KeyEvent.VK_SHIFT);
-		message.playerNumber = getPlayer().getNumber();
+		message.playerNumber = 1;
 
 		if (messageListener != null) {
 			messageListener.messageReceived(message);
-			super.update(delta);
+			//super.update(delta);
 		}
 	}
 

@@ -3,24 +3,24 @@ package game_objects;
 
 import behavior.Explodable;
 import behavior.MoveListener;
-import constants.Constants.Movement;
 import core.Game;
 import events.ExplodeEvent;
 import events.MoveEvent;
 
 public class Player extends GameObject implements Explodable {
 	private static final long BOMB_COOLDOWN_NS = 0;
-	private static final long BLOCK_COOLDOWN_NS = 0;
+	//private static final long BLOCK_COOLDOWN_NS = 0;
 	private static final double MOVE_TIMEOUT = 50;
 	
 	private double moveTimer = 0;
 	
 	private long lastBomb = 0;
-	private long lastBlock = 0;
+	//private long lastBlock = 0;
+	private long lastMove = 0;
 	
 	private int number;
 	
-	private int speed;
+	//private int speed;
 	
 	private int flameLevel;
 	private int maxBombs;
@@ -45,7 +45,6 @@ public class Player extends GameObject implements Explodable {
 		activeBombs = 0;
 		
 		trepassable = true;
-		this.moveListener = game.getMap();
 	}
 	
 	public void placeBomb() {
@@ -59,26 +58,13 @@ public class Player extends GameObject implements Explodable {
 		Bomb bombToAdd = new Bomb(getGame(), flameLevel, this);
 		
 		if (getGame().getMap().isMovableSpace(bombToAdd.getX(), bombToAdd.getY())) {
-			getGame().addObject(bombToAdd);
 			bombToAdd.start();
 			System.out.println("Placed bomb at " + bombToAdd.getX() + ", " + bombToAdd.getY());
 		}
 	}
 	
 	public void placeBlock() {
-		long now = System.nanoTime();
-		
-		if (now - lastBlock < BLOCK_COOLDOWN_NS)
-			return;
-		
-		lastBlock = System.nanoTime();
-				
-		Block blockToAdd = new Block(getGame(), this.getX(), this.getY());
-		
-		if (getGame().getMap().isMovableSpace(blockToAdd.getX(), blockToAdd.getY())) {
-			getGame().addObject(blockToAdd);
-			System.out.println("Placed block at " + blockToAdd.getX() + ", " + blockToAdd.getY());
-		}
+		//not supported anymore
 	}
 	
 	@Override
@@ -140,6 +126,13 @@ public class Player extends GameObject implements Explodable {
 	private void checkMove(int x, int y) {
 		int lastX = this.getX();
 		int lastY = this.getY();
+		
+		long now = System.nanoTime();
+		
+		if (now - lastMove < MOVE_TIMEOUT)
+			return;
+		
+		lastMove = System.nanoTime();
 		
 		if (moveTimer > MOVE_TIMEOUT) {
 			moveTimer %= MOVE_TIMEOUT;

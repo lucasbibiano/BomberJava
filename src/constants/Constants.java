@@ -15,4 +15,9 @@ public interface Constants {
 	
 	public static final int PORT = 12345;
 	public static final String HOST = "localhost"; 
+	
+	public static final char EMPTY_TILE = 0;
+	public static final char FIXED_TILE = 1;
+	public static final char EXPLODABLE_TILE = 2;
+	public static final char EXPLODABLE_POWER_UP_TILE = 3;
 }

@@ -1,64 +1,33 @@
 package game_objects;
 
-import java.util.ArrayList;
+import java.awt.Point;
+import java.util.HashMap;
+import java.util.Random;
 
-import constants.Constants;
+import static constants.Constants.*;
 import core.Game;
 
-import events.ExplodeEvent;
-import events.MoveEvent;
-
-import behavior.Explodable;
-import behavior.MoveListener;
-
-public class Map implements MoveListener {
-	private int width = Constants.WIDTH;
-	private int height = Constants.HEIGHT;
+public class Map {
+	private int width = WIDTH;
+	private int height = HEIGHT;
 	
-	private boolean[][] matrix;
+	private char[][] matrix;
+	
+	private HashMap<Point, PowerUp> powerups;
 	
 	private Game game;
 	
 	public Map(Game game) {
-		matrix = new boolean[height][width];
+		matrix = new char[height][width];
 		this.game = game;
+		powerups = new HashMap<Point, PowerUp>();
 		game.setMap(this);
+		
+		Random r = new Random();
 		
 		for (int i = 0; i < width; i++)
 			for (int j = 0; j < height; j++)
-				matrix[j][i] = true; 
-	}
-	
-	public void addObject(GameObject obj) {
-		if (obj.getX() > width || obj.getY() > height || obj.getX() < 0 || obj.getY() < 0) {
-			return;
-		}
-		matrix[obj.getY()][obj.getX()] = obj.isTrepassable();
-	}
-	
-	public void removeObject(GameObject obj) {
-		GameObject[] last = objAt(obj.getX(), obj.getY());
-		matrix[obj.getY()][obj.getX()] = last.length == 0|| allTrespassable(last);
-	}
-	
-	private boolean allTrespassable(GameObject[] last) {
-		for (GameObject obj: last) {
-			if (!obj.isTrepassable())
-				return false;
-		}
-		
-		return true;
-	}
-
-	public GameObject[] objAt(int x, int y) {
-		ArrayList<GameObject> objects = new ArrayList<GameObject>();
-		
-		for (GameObject obj: game.getObjects()) {
-			if (obj.getX() == x && obj.getY() == y)
-				objects.add(obj);
-		}
-		
-		return objects.toArray(new GameObject[objects.size()]);
+				matrix[j][i] = (char) (r.nextInt(4)); 
 	}
 	
 	public int getWidth(){
@@ -69,32 +38,45 @@ public class Map implements MoveListener {
 		return height;
 	}
 	
+	public PowerUp[] getPowerUps() {
+		return powerups.values().toArray(new PowerUp[powerups.size()]);
+	}
+	
 	public boolean isMovableSpace(int x, int y){
-		return matrix[y][x];
+		return matrix[y][x] == EMPTY_TILE;
 	}
 	
 	public boolean isValid(int x, int y) {
 		return (-1 < y && y < getHeight() && -1 < x && x < getWidth() && isMovableSpace(x, y));
 	}
-
-	@Override
-	public void objectMoved(MoveEvent e) {
-		int lastY = e.getLastY();
-		int lastX = e.getLastX();
-		GameObject objMoved = e.getObjMoved();
-		GameObject[] last = objAt(lastX, lastY);
-				
-		matrix[lastY][lastX] = last.length == 0 || allTrespassable(last);
-		matrix[objMoved.getY()][objMoved.getX()] = objMoved.isTrepassable();
+	
+	public char getType(int x, int y) {
+		return matrix[y][x];
+	}
+	
+	public void loadMap(String file) {
+		//TODO
 	}
 
-	public void bomb(Bomb bomb, int x, int y) {
-		GameObject[] affecteds = objAt(x, y);
+	public void checkExplosion(Explosion explosion) {
+		char tile_type = matrix[explosion.getY()][explosion.getX()];
 		
-		for (GameObject affected: affecteds) {
-			if (affected instanceof Explodable) {
-				((Explodable) affected).exploded(new ExplodeEvent(bomb.getPlayerNumber()));
-			}
+		if (tile_type == EXPLODABLE_TILE)
+			matrix[explosion.getY()][explosion.getX()] = EMPTY_TILE;
+		else if (tile_type == EXPLODABLE_POWER_UP_TILE) {
+			matrix[explosion.getY()][explosion.getX()] = EMPTY_TILE;
+			powerups.put(new Point(explosion.getX(), explosion.getY()), new PowerUp(this.game, explosion.getX(), explosion.getY()) {
+				
+				@Override
+				public void update(double delta) {
+					
+				}
+				
+				@Override
+				public void execute(Player player) {
+					System.out.println("Power up pego");
+				}
+			});
 		}
 	}
 }

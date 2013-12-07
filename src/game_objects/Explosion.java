@@ -1,11 +1,11 @@
 package game_objects;
 
+import thread.SharedThreadPool;
 import core.Game;
 
 public class Explosion extends GameObject {
 
-	private static double LIFETIME = 500;
-	private double timeElapsed = 0;
+	private static long LIFETIME = 500;
 	
 	private Bomb bomb;
 	
@@ -14,16 +14,33 @@ public class Explosion extends GameObject {
 		this.trepassable = true;
 		this.bomb = bomb;
 	}
+	
+	public void start() {
+		final Explosion explosion = this;
+		
+		SharedThreadPool.getES().execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				long startedAt = System.nanoTime();
+				
+				while (true) {
+					if (System.nanoTime() < startedAt + LIFETIME) {
+						getGame().checkExplosion(explosion);
+						Thread.yield();
+					} else {
+						explosion.setToRemove(true);
+					}
+				}
+			}
+		});
+	}
 
 	@Override
 	public void update(double delta) {
-		timeElapsed += delta * 28;
-		
-		if (timeElapsed <= LIFETIME)
-			getGame().getMap().bomb(bomb, getX(), getY());
-		else {
-			setToRemove(true);
-		}
 	}
 
+	public Bomb getBomb() {
+		return bomb;
+	}
 }

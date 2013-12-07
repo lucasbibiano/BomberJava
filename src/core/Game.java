@@ -1,55 +1,47 @@
 package core;
 
-import game_objects.GameObject;
+import events.ExplodeEvent;
+import game_objects.Explosion;
 import game_objects.Map;
 import game_objects.Player;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import networking.Message;
 
 public abstract class Game {
-	private Player player;
-	private ArrayList<GameObject> objects;
 	private Map map;
 	
+	private Player[] players;
+	private int nPlayers;
+	
 	private LinkedList<Message> messages;
-
+	
 	public Game() {
-		objects = new ArrayList<GameObject>();
 		messages = new LinkedList<Message>();
+		players = new Player[4];
+	}
+	
+	public boolean canStart() {
+		return this.nPlayers >= 2;
 	}
 
-	public void update(double delta) {
+	public void update() {
 		for (int i = 0; i < messages.size(); i++) {
 			Message msg = messages.get(i);
 			
-			this.getPlayer().move(msg.moves);
+			players[msg.playerNumber].move(msg.moves);
 			
 			if (msg.placeBomb) {
-				this.getPlayer().placeBomb();
+				players[msg.playerNumber].placeBomb();
 			}
 			
 			if (msg.placeBlock) {
-				this.getPlayer().placeBlock();
+				players[msg.playerNumber].placeBlock();
 			}
 		}
 		
 		messages.clear();
-		
-		for (int i = 0; i < objects.size(); i++) {
-			GameObject obj = objects.get(i);
-
-			if (obj.isToRemove())
-				objects.remove(i);
-			else
-				obj.update(delta);
-		}
-	}
-
-	public ArrayList<GameObject> getObjects() {
-		return objects;
 	}
 
 	public Map getMap() {
@@ -59,26 +51,21 @@ public abstract class Game {
 	public void setMap(Map map) {
 		this.map = map;
 	}
-
-	public void addObject(GameObject obj) {
-		objects.add(obj);
-		map.addObject(obj);
-	}
-
-	public void removeObject(GameObject obj) {
-		objects.remove(obj);
-		map.removeObject(obj);
-	}
-
-	public Player getPlayer() {
-		return player;
-	}
-
-	public void setPlayer(Player player) {
-		this.player = player;
+	
+	public void newPlayer(Player player) {
+		players[nPlayers++] = player;
 	}
 
 	public void process(Message msg) {
 		messages.add(msg);
+	}
+
+	public void checkExplosion(Explosion explosion) {
+		for (Player player: players) {
+			if (player.getX() == explosion.getX() && player.getY() == explosion.getY())
+				player.exploded(new ExplodeEvent(explosion.getBomb().getPlayerNumber()));
+		}
+		
+		map.checkExplosion(explosion);
 	}
 }
