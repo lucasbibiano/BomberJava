@@ -1,11 +1,16 @@
 package networking.server;
 
+import game_objects.Player;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import networking.Message;
+import core.Game;
+
+import networking.GameMessage;
+import networking.SVConfigMessage;
 import thread.SharedThreadPool;
 
 public class PlayerConnection {
@@ -13,11 +18,13 @@ public class PlayerConnection {
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
 
-	public PlayerConnection(Socket socket) throws IOException {
+	private Game game;
+
+	public PlayerConnection(Socket socket, Game game) throws IOException {
 		output = new ObjectOutputStream(socket.getOutputStream());
 		output.flush();
 		input = new ObjectInputStream(socket.getInputStream());
-		listen();
+		this.game = game;
 	}
 
 	public void listen() {
@@ -25,20 +32,29 @@ public class PlayerConnection {
 
 			@Override
 			public void run() {
-				while (true) {
-					try {
-						Message msg = (Message) input.readObject();
-						System.out.println(msg);
-						send(msg);
-					} catch (IOException | ClassNotFoundException e) {
-						break;
+				try {
+					SVConfigMessage configMsg = new SVConfigMessage();
+					configMsg.map = game.getMap();
+					configMsg.nPlayers = game.getNPlayers();
+
+					game.newPlayer(new Player(game, 10, 10, 1));
+
+					output.writeObject(configMsg);
+					output.flush();
+
+					while (true) {
+						GameMessage msg = (GameMessage) input.readObject();
+						game.process(msg);
 					}
+
+				} catch (IOException | ClassNotFoundException e) {
+					e.printStackTrace();
 				}
 			}
 		});
 	}
 
-	public void send(Message msg) throws IOException {
+	public void send(final GameMessage msg) throws IOException {
 		output.writeObject(msg);
 		output.flush();
 	}

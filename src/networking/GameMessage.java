@@ -3,11 +3,11 @@ package networking;
 import java.io.Serializable;
 import java.util.Arrays;
 
-public class Message implements Serializable {
+public class GameMessage implements Serializable {
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1545345L;
 	public boolean[] moves = new boolean[4];
     public boolean placeBomb;
     public boolean placeBlock;

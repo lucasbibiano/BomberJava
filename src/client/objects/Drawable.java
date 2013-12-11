@@ -1,4 +1,4 @@
-package graphics.objects;
+package client.objects;
 
 import java.awt.Graphics;
 

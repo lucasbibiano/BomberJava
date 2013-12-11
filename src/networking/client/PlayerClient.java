@@ -1,23 +1,27 @@
 package networking.client;
 
+import game_objects.Player;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import client.core.GameClient;
+
 import behavior.MessageListener;
 
-import networking.Message;
+import networking.GameMessage;
+import networking.SVConfigMessage;
 import thread.SharedThreadPool;
-import core.Game;
 
 public class PlayerClient implements MessageListener {
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
-	
-	private Game game;
 
-	public PlayerClient(Socket socket, Game game) throws IOException {
+	private GameClient game;
+
+	public PlayerClient(Socket socket, GameClient game) throws IOException {
 		output = new ObjectOutputStream(socket.getOutputStream());
 		output.flush();
 		input = new ObjectInputStream(socket.getInputStream());
@@ -29,26 +33,30 @@ public class PlayerClient implements MessageListener {
 
 			@Override
 			public void run() {
-				while (true) {
-					try {
-						Message msg = (Message) input.readObject();
-						System.out.println(msg);
-						game.process(msg);
-					} catch (IOException | ClassNotFoundException e) {
-						e.printStackTrace();
+
+				try {
+					SVConfigMessage configMsg = (SVConfigMessage) input.readObject();
+					game.setMap(configMsg.map);
+					game.newPlayer(new Player(game, 10, 10, configMsg.nPlayers + 1));
+					System.out.println(configMsg);
+					
+					while (true) {
+						GameMessage msg = (GameMessage) input.readObject();
+						Thread.yield();
 					}
+				} catch (IOException | ClassNotFoundException e) {
 				}
 			}
 		});
 	}
 
-	public void send(Message msg) throws IOException {
+	public void send(GameMessage msg) throws IOException {
 		output.writeObject(msg);
 		output.flush();
 	}
 
 	@Override
-	public void messageReceived(Message msg) {
+	public void messageReceived(GameMessage msg) {
 		try {
 			send(msg);
 		} catch (IOException e) {

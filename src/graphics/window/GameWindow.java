@@ -3,14 +3,7 @@ package graphics.window;
 import static constants.Constants.HOST;
 import static constants.Constants.PORT;
 import static constants.Constants.TILESIZE;
-import game_objects.GameObject;
-import game_objects.Map;
-import game_objects.Player;
-import graphics.core.GameGraphics;
-import graphics.input.GameKeyListener;
-import graphics.objects.Drawable;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -18,12 +11,14 @@ import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import networking.client.PlayerClient;
+import client.core.GameClient;
+import client.input.GameKeyListener;
+import client.objects.Drawable;
 
+import networking.client.PlayerClient;
 import constants.Constants;
 
 ;
@@ -39,7 +34,7 @@ public class GameWindow extends JFrame implements Drawable {
 	private static final long serialVersionUID = 5593300460625998050L;
 
 	private BufferStrategy bStrategy;
-	private GameGraphics game;
+	private GameClient game;
 
 	private boolean gameRunning = true;
 
@@ -49,9 +44,8 @@ public class GameWindow extends JFrame implements Drawable {
 
 	private GameKeyListener keyListener;
 
-	public GameWindow(final GameGraphics game) {
+	public GameWindow(final GameClient game) {
 		super("Bomber Java");
-		setUndecorated(true);
 
 		this.game = game;
 
@@ -69,7 +63,7 @@ public class GameWindow extends JFrame implements Drawable {
 		bStrategy = this.getBufferStrategy();
 	}
 
-	public void gameLoop() {
+	public void gameLoop() {		
 		long lastLoopTime = System.nanoTime();
 		final int TARGET_FPS = 28;
 		final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
@@ -82,7 +76,6 @@ public class GameWindow extends JFrame implements Drawable {
 			long now = System.nanoTime();
 			long updateLength = now - lastLoopTime;
 			lastLoopTime = now;
-			double delta = updateLength / ((double) OPTIMAL_TIME);
 
 			// update the frame counter
 			lastFpsTime += updateLength;
@@ -96,13 +89,7 @@ public class GameWindow extends JFrame implements Drawable {
 				fps = 0;
 			}
 
-			// update the game logic
-			doGameUpdates(delta);
-
-			// draw on memory
 			draw(bStrategy.getDrawGraphics());
-
-			// draw everyting
 			render();
 
 			// we want each frame to take 10 milliseconds, to do this
@@ -125,41 +112,20 @@ public class GameWindow extends JFrame implements Drawable {
 		bStrategy.show();
 	}
 
-	private void doGameUpdates(double delta) {
-		game.update(delta);
-	}
-
 	@Override
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 
-		g2d.setColor(Color.green);
-		g2d.fillRect(0, 0, width, height);
-		g2d.setColor(Color.black);
 		game.draw(g2d);
 	}
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
-		GameGraphics game = null;
+		GameClient game = new GameClient();
 
-		try {
-			game = new GameGraphics();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			System.exit(1);
-		}
-		
-		PlayerClient client;
-		
-		client = new PlayerClient(new Socket(HOST, PORT), game);
+		PlayerClient client = new PlayerClient(new Socket(HOST, PORT), game);
 		client.listen();
+		
 		game.setMessageListener(client);
-		
-		Map map = new Map(game);
-		game.setMap(map);
-		
-		Player player = new Player(game, 10, 10, 1);
-		game.newPlayer(player);
 
 		GameWindow window = new GameWindow(game);
 		window.gameLoop();

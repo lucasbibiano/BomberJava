@@ -1,21 +1,27 @@
 package game_objects;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Random;
 
 import static constants.Constants.*;
 import core.Game;
 
-public class Map {
+public class Map implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4341L;
+	
 	private int width = WIDTH;
 	private int height = HEIGHT;
 	
 	private char[][] matrix;
 	
-	private HashMap<Point, PowerUp> powerups;
+	private transient HashMap<Point, PowerUp> powerups;
 	
-	private Game game;
+	private transient Game game;
 	
 	public Map(Game game) {
 		matrix = new char[height][width];
@@ -27,7 +33,7 @@ public class Map {
 		
 		for (int i = 0; i < width; i++)
 			for (int j = 0; j < height; j++)
-				matrix[j][i] = (char) (r.nextInt(4)); 
+				matrix[j][i] = (char) r.nextInt(4); 
 	}
 	
 	public int getWidth(){

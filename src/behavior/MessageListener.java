@@ -1,7 +1,7 @@
 package behavior;
 
-import networking.Message;
+import networking.GameMessage;
 
 public interface MessageListener {
-	public void messageReceived(Message msg);
+	public void messageReceived(GameMessage msg);
 }

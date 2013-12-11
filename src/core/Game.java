@@ -1,34 +1,39 @@
 package core;
 
 import events.ExplodeEvent;
+import game_objects.Bomb;
 import game_objects.Explosion;
 import game_objects.Map;
 import game_objects.Player;
 
 import java.util.LinkedList;
 
-import networking.Message;
+import networking.GameMessage;
 
-public abstract class Game {
+public class Game {
 	private Map map;
 	
 	private Player[] players;
-	private int nPlayers;
+	protected int nPlayers;
 	
-	private LinkedList<Message> messages;
+	protected LinkedList<GameMessage> messages;
+	protected LinkedList<Bomb> bombs;
+	protected LinkedList<Explosion> explosions;
 	
 	public Game() {
-		messages = new LinkedList<Message>();
+		messages = new LinkedList<GameMessage>();
 		players = new Player[4];
+		bombs = new LinkedList<Bomb>();
+		explosions = new LinkedList<Explosion>();
 	}
 	
 	public boolean canStart() {
-		return this.nPlayers >= 2;
+		return this.nPlayers >= 1;
 	}
 
 	public void update() {
 		for (int i = 0; i < messages.size(); i++) {
-			Message msg = messages.get(i);
+			GameMessage msg = messages.get(i);
 			
 			players[msg.playerNumber].move(msg.moves);
 			
@@ -56,8 +61,12 @@ public abstract class Game {
 		players[nPlayers++] = player;
 	}
 
-	public void process(Message msg) {
+	public void process(GameMessage msg) {
 		messages.add(msg);
+	}
+	
+	public Player[] getPlayers() {
+		return players;
 	}
 
 	public void checkExplosion(Explosion explosion) {
@@ -67,5 +76,17 @@ public abstract class Game {
 		}
 		
 		map.checkExplosion(explosion);
+	}
+	
+	public void addBomb(Bomb bomb) {
+		bombs.add(bomb);
+	}
+	
+	public void addExplosion(Explosion exp) {
+		explosions.add(exp);
+	}
+	
+	public int getNPlayers() {
+		return nPlayers;
 	}
 }

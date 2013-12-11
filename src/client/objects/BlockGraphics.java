@@ -1,8 +1,9 @@
-package graphics.objects;
+package client.objects;
 
 import static constants.Constants.TILESIZE;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -11,34 +12,33 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import game_objects.Bomb;
+import game_objects.Block;
 import game_objects.GameObject;
 
-public class BombGraphics extends GameObjectGraphics {
+public class BlockGraphics extends GameObjectGraphics {
+	private Block block;
 	
-	private Bomb bomb;
-	
-	public BombGraphics(GameObject bomb) {
-		super(bomb);
-		this.bomb = (Bomb) bomb;
+	public BlockGraphics(GameObject block) {
+		super(block);
+		this.block = (Block) block;
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(bomb.isExploded() ? Color.YELLOW : Color.black);
 		
 		BufferedImage img = null;
 		String url = System.getProperty("user.dir");
-		url+="/src/sprites/bomb.gif";
+		url+="/src/sprites/block.gif";
 		
 		try {
 		    img = ImageIO.read(new File(url));
 		} catch (IOException e) {
 		}
 		
-		g2d.drawImage(img, bomb.getX() * TILESIZE, bomb.getY() * TILESIZE, null);
+		g2d.drawImage(img, block.getX() * TILESIZE, block.getY() * TILESIZE, null);
 		
-		//g2d.fillOval(bomb.getX() * TILESIZE + 4, bomb.getY() * TILESIZE + 4, 32 - 8, 32 - 8);
+		//g2d.setColor(new Color(105,112,96));
+		
 	}
 }

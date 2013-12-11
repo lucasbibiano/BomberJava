@@ -1,41 +1,65 @@
-package graphics.core;
+package client.core;
 
-import game_objects.GameObject;
+import game_objects.Bomb;
+import game_objects.Explosion;
 import game_objects.Map;
-import graphics.input.GameKeyListener;
-import graphics.objects.Drawable;
-import graphics.objects.MapGraphics;
+import game_objects.Player;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Iterator;
 
+import client.input.GameKeyListener;
+import client.objects.BombGraphics;
+import client.objects.Drawable;
+import client.objects.ExplosionGraphics;
+import client.objects.MapGraphics;
+import client.objects.PlayerGraphics;
+
+import networking.GameMessage;
 import behavior.MessageListener;
-
-import networking.Message;
-
-import static constants.Constants.*;
 import core.Game;
 
-public class GameGraphics extends Game implements Drawable {
+public class GameClient extends Game implements Drawable {
 	private MapGraphics mapGraphics;
 
 	private GameKeyListener keyListener;
 	
 	private MessageListener messageListener;
 	
-	public GameGraphics() throws UnknownHostException, IOException {
+	public GameClient() {
 		super();
 	}
 
 	@Override
 	public void draw(Graphics g) {
-		mapGraphics.draw(g);
+		if (mapGraphics != null)
+			mapGraphics.draw(g);
 
+		for (int i = 0; i < nPlayers; i++) {
+			Player p = getPlayers()[i];
+			PlayerGraphics pg = new PlayerGraphics(p);
+			
+			pg.draw(g);
+		}
+		
+		Iterator<Bomb> i = bombs.iterator();
+		while (i.hasNext()) {
+			Bomb b = i.next();
+			BombGraphics bg = new BombGraphics(b);
+			bg.draw(g);
+		}
+		
+		Iterator<Explosion> j = explosions.iterator();
+		while (j.hasNext()) {
+			Explosion e = j.next();
+			ExplosionGraphics eg = new ExplosionGraphics(e);
+			eg.draw(g);
+		}
+		
+		
 /*		for (int i = getObjects().size() - 1; i >= 0; --i) {
 			GameObject obj = getObjects().get(i);
 			Method method;
@@ -63,7 +87,7 @@ public class GameGraphics extends Game implements Drawable {
 	}
 
 	public void update(double delta) {
-		Message message = new Message();
+		GameMessage message = new GameMessage();
 		
 		boolean[] moves = new boolean[4];
 
