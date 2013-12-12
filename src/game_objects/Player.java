@@ -36,8 +36,23 @@ public class Player extends GameObject implements Explodable {
 	private boolean stopped;
 	private boolean dead;
 
-	public Player(Game game, int x, int y, int number) {
-		super(game, x, y);
+	public Player(Game game, int number) {		
+		super(game, 0, 0);
+		
+		if (number == 1) {
+			setX(0);
+			setY(0);
+		} else if (number == 2) {
+			setX(49);
+			setY(0);
+		} else if (number == 3) {
+			setX(0);
+			setY(19);
+		} else { //number == 4
+			setX(49);
+			setY(19);
+		}
+		
 		this.number = number;
 		
 		flameLevel = 3;

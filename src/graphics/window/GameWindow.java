@@ -20,6 +20,7 @@ import client.objects.Drawable;
 
 import networking.client.PlayerClient;
 import constants.Constants;
+import core.Game;
 
 ;
 
@@ -120,7 +121,7 @@ public class GameWindow extends JFrame implements Drawable {
 	}
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
-		GameClient game = new GameClient();
+		GameClient game = new GameClient(new Game());
 
 		PlayerClient client = new PlayerClient(new Socket(HOST, PORT), game);
 		client.listen();

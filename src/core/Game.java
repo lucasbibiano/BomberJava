@@ -7,6 +7,7 @@ import game_objects.Map;
 import game_objects.Player;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import networking.GameMessage;
 
@@ -28,7 +29,7 @@ public class Game {
 	}
 	
 	public boolean canStart() {
-		return this.nPlayers >= 1;
+		return nPlayers >= 2;
 	}
 
 	public void update() {
@@ -88,5 +89,13 @@ public class Game {
 	
 	public int getNPlayers() {
 		return nPlayers;
+	}
+
+	public List<Bomb> getBombs() {
+		return bombs;
+	}
+	
+	public List<Explosion> getExplosions() {
+		return explosions;
 	}
 }

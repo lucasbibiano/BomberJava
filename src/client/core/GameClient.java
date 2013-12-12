@@ -22,37 +22,44 @@ import networking.GameMessage;
 import behavior.MessageListener;
 import core.Game;
 
-public class GameClient extends Game implements Drawable {
+public class GameClient implements Drawable {
 	private MapGraphics mapGraphics;
 
 	private GameKeyListener keyListener;
 	
 	private MessageListener messageListener;
 	
-	public GameClient() {
-		super();
+	private Game game;
+	
+	public GameClient(Game game) {
+		this.game = game;
 	}
 
 	@Override
 	public void draw(Graphics g) {
+		if (!game.canStart()) {
+			g.drawString("Waiting for players", 100, 100);
+			return;
+		}
+		
 		if (mapGraphics != null)
 			mapGraphics.draw(g);
 
-		for (int i = 0; i < nPlayers; i++) {
-			Player p = getPlayers()[i];
+		for (int i = 0; i < game.getNPlayers(); i++) {
+			Player p = game.getPlayers()[i];
 			PlayerGraphics pg = new PlayerGraphics(p);
 			
 			pg.draw(g);
 		}
 		
-		Iterator<Bomb> i = bombs.iterator();
+		Iterator<Bomb> i = game.getBombs().iterator();
 		while (i.hasNext()) {
 			Bomb b = i.next();
 			BombGraphics bg = new BombGraphics(b);
 			bg.draw(g);
 		}
 		
-		Iterator<Explosion> j = explosions.iterator();
+		Iterator<Explosion> j = game.getExplosions().iterator();
 		while (j.hasNext()) {
 			Explosion e = j.next();
 			ExplosionGraphics eg = new ExplosionGraphics(e);
@@ -80,13 +87,12 @@ public class GameClient extends Game implements Drawable {
 		}*/
 	}
 
-	@Override
 	public void setMap(Map map) {
-		super.setMap(map);
-		this.mapGraphics = new MapGraphics(this.getMap());
+		game.setMap(map);
+		this.mapGraphics = new MapGraphics(game.getMap());
 	}
 
-	public void update(double delta) {
+	public void update() {
 		GameMessage message = new GameMessage();
 		
 		boolean[] moves = new boolean[4];
@@ -107,7 +113,6 @@ public class GameClient extends Game implements Drawable {
 
 		if (messageListener != null) {
 			messageListener.messageReceived(message);
-			//super.update(delta);
 		}
 	}
 
@@ -121,5 +126,13 @@ public class GameClient extends Game implements Drawable {
 
 	public void setMessageListener(MessageListener messageListener) {
 		this.messageListener = messageListener;
+	}
+
+	public void newPlayer(Player player) {
+		game.newPlayer(player);
+	}
+
+	public Game getGame() {
+		return game;
 	}
 }

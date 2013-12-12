@@ -1,19 +1,15 @@
 package networking.client;
 
-import game_objects.Player;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import client.core.GameClient;
-
-import behavior.MessageListener;
-
 import networking.GameMessage;
 import networking.SVConfigMessage;
 import thread.SharedThreadPool;
+import behavior.MessageListener;
+import client.core.GameClient;
 
 public class PlayerClient implements MessageListener {
 	private ObjectInputStream input;
@@ -37,8 +33,6 @@ public class PlayerClient implements MessageListener {
 				try {
 					SVConfigMessage configMsg = (SVConfigMessage) input.readObject();
 					game.setMap(configMsg.map);
-					game.newPlayer(new Player(game, 10, 10, configMsg.nPlayers + 1));
-					System.out.println(configMsg);
 					
 					while (true) {
 						GameMessage msg = (GameMessage) input.readObject();

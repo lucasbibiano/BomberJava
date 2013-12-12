@@ -37,7 +37,7 @@ public class PlayerConnection {
 					configMsg.map = game.getMap();
 					configMsg.nPlayers = game.getNPlayers();
 
-					game.newPlayer(new Player(game, 10, 10, 1));
+					game.newPlayer(new Player(game, game.getNPlayers()));
 
 					output.writeObject(configMsg);
 					output.flush();
