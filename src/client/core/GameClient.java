@@ -115,6 +115,8 @@ public class GameClient implements Drawable {
 		if (messageListener != null) {
 			messageListener.messageReceived(message);
 		}
+		
+		game.update();
 	}
 
 	public void setKeyInput(GameKeyListener keyListener) {

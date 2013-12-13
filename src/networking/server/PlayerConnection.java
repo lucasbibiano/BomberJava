@@ -49,6 +49,7 @@ public class PlayerConnection {
 					while (true) {
 						GameMessage msg = (GameMessage) input.readObject();
 						game.process(msg);
+						game.update();
 					}
 
 				} catch (IOException | ClassNotFoundException e) {

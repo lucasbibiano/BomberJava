@@ -49,9 +49,9 @@ public class PlayerClient implements MessageListener {
 							adjustPlayers(svmsg.nPlayers);
 
 						} else {
+							System.out.println("hueheuheu");
 							game.getGame().process((GameMessage) msg);
 						}
-							
 						
 						Thread.yield();
 					}

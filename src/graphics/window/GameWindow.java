@@ -91,6 +91,7 @@ public class GameWindow extends JFrame implements Drawable {
 				fps = 0;
 			}
 
+			game.update();
 			draw(bStrategy.getDrawGraphics());
 			render();
 
@@ -125,9 +126,9 @@ public class GameWindow extends JFrame implements Drawable {
 		GameClient game = new GameClient(new Game());
 
 		PlayerClient client = new PlayerClient(new Socket(HOST, PORT), game);
+		game.setMessageListener(client);
 		client.listen();
 		
-		game.setMessageListener(client);
 
 		GameWindow window = new GameWindow(game);
 		window.gameLoop();

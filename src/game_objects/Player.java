@@ -43,14 +43,14 @@ public class Player extends GameObject implements Explodable {
 			setX(0);
 			setY(0);
 		} else if (number == 1) {
-			setX(49);
+			setX(10);
 			setY(0);
 		} else if (number == 2) {
 			setX(0);
-			setY(19);
+			setY(10);
 		} else { //number == 3
-			setX(49);
-			setY(19);
+			setX(10);
+			setY(10);
 		}
 		
 		this.number = number;

@@ -33,7 +33,7 @@ public class Map implements Serializable {
 		
 		for (int i = 0; i < width; i++)
 			for (int j = 0; j < height; j++)
-				matrix[j][i] = (char) r.nextInt(4); 
+				matrix[j][i] = EMPTY_TILE; 
 	}
 	
 	public int getWidth(){
