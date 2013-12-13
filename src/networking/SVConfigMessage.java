@@ -4,7 +4,7 @@ import game_objects.Map;
 
 import java.io.Serializable;
 
-public class SVConfigMessage implements Serializable {
+public class SVConfigMessage implements Serializable, Message {
 	/**
 	 * 
 	 */

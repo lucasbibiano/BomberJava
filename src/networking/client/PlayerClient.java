@@ -1,11 +1,14 @@
 package networking.client;
 
+import game_objects.Player;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import networking.GameMessage;
+import networking.Message;
 import networking.SVConfigMessage;
 import thread.SharedThreadPool;
 import behavior.MessageListener;
@@ -35,7 +38,26 @@ public class PlayerClient implements MessageListener {
 					game.setMap(configMsg.map);
 					
 					while (true) {
-						GameMessage msg = (GameMessage) input.readObject();
+						Message msg = (Message) input.readObject();
+						
+						if (msg instanceof SVConfigMessage) {
+							SVConfigMessage svmsg = (SVConfigMessage) msg;
+							
+							if (game.getGame().getNPlayers() != svmsg.nPlayers) {
+								System.out.println("passei por aqui");
+								System.out.println(msg);
+								
+								for (int i = game.getGame().getNPlayers(); i <= svmsg.nPlayers + 1; i++) {
+									System.out.println("passei por aqui tbm");
+
+									game.newPlayer(new Player(game.getGame(), i));
+								}
+							}
+						} else {
+							game.getGame().process((GameMessage) msg);
+						}
+							
+						
 						Thread.yield();
 					}
 				} catch (IOException | ClassNotFoundException e) {

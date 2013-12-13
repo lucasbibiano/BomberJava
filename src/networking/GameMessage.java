@@ -3,7 +3,7 @@ package networking;
 import java.io.Serializable;
 import java.util.Arrays;
 
-public class GameMessage implements Serializable {
+public class GameMessage implements Serializable, Message {
     /**
 	 * 
 	 */
@@ -12,6 +12,8 @@ public class GameMessage implements Serializable {
     public boolean placeBomb;
     public boolean placeBlock;
     public int playerNumber;
+    
+    public String message;
     
     @Override
     public String toString() {

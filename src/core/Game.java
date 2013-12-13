@@ -58,7 +58,7 @@ public class Game {
 		this.map = map;
 	}
 	
-	public void newPlayer(Player player) {
+	public synchronized void newPlayer(Player player) {
 		players[nPlayers++] = player;
 	}
 

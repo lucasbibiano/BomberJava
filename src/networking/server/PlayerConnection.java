@@ -10,6 +10,7 @@ import java.net.Socket;
 import core.Game;
 
 import networking.GameMessage;
+import networking.Message;
 import networking.SVConfigMessage;
 import thread.SharedThreadPool;
 
@@ -20,11 +21,14 @@ public class PlayerConnection {
 
 	private Game game;
 
-	public PlayerConnection(Socket socket, Game game) throws IOException {
+	private Server server;
+	
+	public PlayerConnection(Socket socket, Server server) throws IOException {
 		output = new ObjectOutputStream(socket.getOutputStream());
 		output.flush();
 		input = new ObjectInputStream(socket.getInputStream());
-		this.game = game;
+		this.server = server;
+		this.game = server.getGame();
 	}
 
 	public void listen() {
@@ -37,11 +41,10 @@ public class PlayerConnection {
 					configMsg.map = game.getMap();
 					configMsg.nPlayers = game.getNPlayers();
 
+					server.broadcast(configMsg);
+
 					game.newPlayer(new Player(game, game.getNPlayers()));
-
-					output.writeObject(configMsg);
-					output.flush();
-
+					
 					while (true) {
 						GameMessage msg = (GameMessage) input.readObject();
 						game.process(msg);
@@ -54,7 +57,7 @@ public class PlayerConnection {
 		});
 	}
 
-	public void send(final GameMessage msg) throws IOException {
+	public void send(final Message msg) throws IOException {
 		output.writeObject(msg);
 		output.flush();
 	}

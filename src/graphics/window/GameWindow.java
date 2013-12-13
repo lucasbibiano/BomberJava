@@ -47,6 +47,7 @@ public class GameWindow extends JFrame implements Drawable {
 
 	public GameWindow(final GameClient game) {
 		super("Bomber Java");
+		setUndecorated(true);
 
 		this.game = game;
 
