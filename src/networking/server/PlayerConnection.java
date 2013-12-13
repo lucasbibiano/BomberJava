@@ -36,15 +36,16 @@ public class PlayerConnection {
 
 			@Override
 			public void run() {
-				try {
+				try {					
 					SVConfigMessage configMsg = new SVConfigMessage();
 					configMsg.map = game.getMap();
-					configMsg.nPlayers = game.getNPlayers();
+					configMsg.nPlayers = game.getNPlayers() + 1;
+					configMsg.yourNumber = game.getNPlayers();
 
 					server.broadcast(configMsg);
-
-					game.newPlayer(new Player(game, game.getNPlayers()));
 					
+					game.newPlayer(new Player(game, game.getNPlayers()));
+
 					while (true) {
 						GameMessage msg = (GameMessage) input.readObject();
 						game.process(msg);

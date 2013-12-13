@@ -30,6 +30,7 @@ public class GameClient implements Drawable {
 	private MessageListener messageListener;
 	
 	private Game game;
+	private int playerNumber;
 	
 	public GameClient(Game game) {
 		this.game = game;
@@ -109,7 +110,7 @@ public class GameClient implements Drawable {
 		message.moves = moves;
 		message.placeBomb = keyListener.isPressed(KeyEvent.VK_SPACE);
 		message.placeBlock = keyListener.isPressed(KeyEvent.VK_SHIFT);
-		message.playerNumber = 1;
+		message.playerNumber = playerNumber;
 
 		if (messageListener != null) {
 			messageListener.messageReceived(message);
@@ -134,5 +135,9 @@ public class GameClient implements Drawable {
 
 	public Game getGame() {
 		return game;
+	}
+
+	public void setPlayerNumber(int yourNumber) {
+		playerNumber = yourNumber;
 	}
 }

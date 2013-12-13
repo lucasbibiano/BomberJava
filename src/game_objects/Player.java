@@ -36,19 +36,19 @@ public class Player extends GameObject implements Explodable {
 	private boolean stopped;
 	private boolean dead;
 
-	public Player(Game game, int number) {		
-		super(game, 0, 0);
+	public Player(Game game, int number) {
+		super(game, 10, 10);
 		
-		if (number == 1) {
+		if (number == 0) {
 			setX(0);
 			setY(0);
-		} else if (number == 2) {
+		} else if (number == 1) {
 			setX(49);
 			setY(0);
-		} else if (number == 3) {
+		} else if (number == 2) {
 			setX(0);
 			setY(19);
-		} else { //number == 4
+		} else { //number == 3
 			setX(49);
 			setY(19);
 		}

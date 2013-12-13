@@ -36,23 +36,18 @@ public class PlayerClient implements MessageListener {
 				try {
 					SVConfigMessage configMsg = (SVConfigMessage) input.readObject();
 					game.setMap(configMsg.map);
+					game.setPlayerNumber(configMsg.yourNumber);
+					adjustPlayers(configMsg.nPlayers);
+					
+					System.out.println("My number is " + configMsg.yourNumber);
 					
 					while (true) {
 						Message msg = (Message) input.readObject();
 						
 						if (msg instanceof SVConfigMessage) {
 							SVConfigMessage svmsg = (SVConfigMessage) msg;
-							
-							if (game.getGame().getNPlayers() != svmsg.nPlayers) {
-								System.out.println("passei por aqui");
-								System.out.println(msg);
-								
-								for (int i = game.getGame().getNPlayers(); i <= svmsg.nPlayers + 1; i++) {
-									System.out.println("passei por aqui tbm");
+							adjustPlayers(svmsg.nPlayers);
 
-									game.newPlayer(new Player(game.getGame(), i));
-								}
-							}
 						} else {
 							game.getGame().process((GameMessage) msg);
 						}
@@ -64,6 +59,14 @@ public class PlayerClient implements MessageListener {
 				}
 			}
 		});
+	}
+	
+	public void adjustPlayers(int nPlayers) {
+		if (game.getGame().getNPlayers() != nPlayers) {
+			for (int i = game.getGame().getNPlayers(); i < nPlayers; i++) {
+				game.newPlayer(new Player(game.getGame(), i));
+			}
+		}
 	}
 
 	public void send(GameMessage msg) throws IOException {

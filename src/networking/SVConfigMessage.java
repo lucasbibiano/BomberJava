@@ -13,6 +13,8 @@ public class SVConfigMessage implements Serializable, Message {
 	public int nPlayers;
 	public Map map;
 	
+	public int yourNumber;
+	
 	public String toString() {
 		return String.valueOf(nPlayers);
 	}
