@@ -1,6 +1,8 @@
 package client.objects;
 
 
+import game_objects.Bomb;
+import game_objects.Explosion;
 import game_objects.GameObject;
 import game_objects.Player;
 
@@ -23,6 +25,15 @@ public class PlayerGraphics extends GameObjectGraphics {
 		super(player);
 		this.player = (Player) player;
 	}
+	
+	public void addBomb(Bomb bomb) {
+		player.getGame().getBombs().add(bomb);
+	}
+	
+	public void addExplosion(Explosion exp) {
+		player.getGame().getExplosions().add(exp);
+	}
+
 	
 	@Override
 	public void draw(Graphics g) {

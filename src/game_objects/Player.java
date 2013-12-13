@@ -96,11 +96,13 @@ public class Player extends GameObject implements Explodable {
 		return dead;
 	}
 	
-	public void move(boolean[] move) {
+	public synchronized void move(boolean[] move) {
 		movingUp = move[0];
 		movingDown = move[1];
 		movingLeft = move[2];
 		movingRight = move[3];
+		
+		update(1);
 	}
 
 	@Override
@@ -157,7 +159,8 @@ public class Player extends GameObject implements Explodable {
 				setY(y);
 				
 				if (x != lastX && y != lastY)
-					moveListener.objectMoved(new MoveEvent(lastX, lastY, this));
+					if (moveListener != null)
+						moveListener.objectMoved(new MoveEvent(lastX, lastY, this));
 			}
 		}
 	}

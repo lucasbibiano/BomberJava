@@ -47,9 +47,17 @@ public class PlayerConnection {
 					game.newPlayer(new Player(game, game.getNPlayers()));
 
 					while (true) {
-						GameMessage msg = (GameMessage) input.readObject();
-						game.process(msg);
-						game.update();
+						Message msg = (Message) input.readObject();
+						
+						if (msg instanceof GameMessage) {
+							GameMessage gmsg = (GameMessage) msg;
+							server.broadcast(gmsg);
+
+							game.process(gmsg);
+							game.update();
+						}
+						
+						Thread.yield();
 					}
 
 				} catch (IOException | ClassNotFoundException e) {

@@ -6,6 +6,8 @@ import game_objects.Explosion;
 import game_objects.Map;
 import game_objects.Player;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,27 +19,28 @@ public class Game {
 	private Player[] players;
 	protected int nPlayers;
 	
-	protected LinkedList<GameMessage> messages;
-	protected LinkedList<Bomb> bombs;
-	protected LinkedList<Explosion> explosions;
+	protected ArrayList<GameMessage> messages;
+	protected ArrayList<Bomb> bombs;
+	protected ArrayList<Explosion> explosions;
 	
 	public Game() {
-		messages = new LinkedList<GameMessage>();
+		messages = new ArrayList<GameMessage>();
 		players = new Player[4];
-		bombs = new LinkedList<Bomb>();
-		explosions = new LinkedList<Explosion>();
+		bombs = new ArrayList<Bomb>();
+		explosions = new ArrayList<Explosion>();
 	}
 	
 	public boolean canStart() {
 		return nPlayers >= 2;
 	}
 
-	public void update() {
+	public synchronized void update() {
 		for (int i = 0; i < messages.size(); i++) {
 			GameMessage msg = messages.get(i);
 			
 			players[msg.playerNumber].move(msg.moves);
 			
+			/*
 			if (msg.placeBomb) {
 				players[msg.playerNumber].placeBomb();
 			}
@@ -45,6 +48,7 @@ public class Game {
 			if (msg.placeBlock) {
 				players[msg.playerNumber].placeBlock();
 			}
+			*/
 		}
 		
 		messages.clear();
@@ -77,14 +81,6 @@ public class Game {
 		}
 		
 		map.checkExplosion(explosion);
-	}
-	
-	public void addBomb(Bomb bomb) {
-		bombs.add(bomb);
-	}
-	
-	public void addExplosion(Explosion exp) {
-		explosions.add(exp);
 	}
 	
 	public int getNPlayers() {

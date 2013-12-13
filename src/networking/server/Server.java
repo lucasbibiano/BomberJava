@@ -48,7 +48,7 @@ public class Server {
 		});
 	}
 	
-	public void broadcast(Message message) throws IOException {
+	public synchronized void broadcast(Message message) throws IOException {
 		for (int i = 0; i < numOfPlayers; i++) {
 			if (players[i] == null)
 				continue;

@@ -35,7 +35,7 @@ public class GameClient implements Drawable {
 	public GameClient(Game game) {
 		this.game = game;
 	}
-
+	
 	@Override
 	public void draw(Graphics g) {
 		if (!game.canStart()) {
@@ -53,20 +53,17 @@ public class GameClient implements Drawable {
 			pg.draw(g);
 		}
 		
-		Iterator<Bomb> i = game.getBombs().iterator();
-		while (i.hasNext()) {
-			Bomb b = i.next();
+		for (int i = 0 ; i < game.getBombs().size(); i++) {
+			Bomb b = game.getBombs().get(i);
 			BombGraphics bg = new BombGraphics(b);
 			bg.draw(g);
 		}
 		
-		Iterator<Explosion> j = game.getExplosions().iterator();
-		while (j.hasNext()) {
-			Explosion e = j.next();
+		for (int i = 0; i < game.getExplosions().size(); i++) {
+			Explosion e = game.getExplosions().get(i);
 			ExplosionGraphics eg = new ExplosionGraphics(e);
 			eg.draw(g);
 		}
-		
 		
 /*		for (int i = getObjects().size() - 1; i >= 0; --i) {
 			GameObject obj = getObjects().get(i);
@@ -96,6 +93,8 @@ public class GameClient implements Drawable {
 	public void update() {
 		GameMessage message = new GameMessage();
 		
+		System.out.println(message);
+		
 		boolean[] moves = new boolean[4];
 
 		if (keyListener.isPressed(KeyEvent.VK_UP))
@@ -111,6 +110,9 @@ public class GameClient implements Drawable {
 		message.placeBomb = keyListener.isPressed(KeyEvent.VK_SPACE);
 		message.placeBlock = keyListener.isPressed(KeyEvent.VK_SHIFT);
 		message.playerNumber = playerNumber;
+		
+		if (moves[0] || moves[1] || moves[2] || moves[3] || message.placeBlock || message.placeBomb)
+			System.out.println(message);
 
 		if (messageListener != null) {
 			messageListener.messageReceived(message);

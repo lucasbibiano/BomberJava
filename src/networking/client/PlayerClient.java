@@ -34,33 +34,34 @@ public class PlayerClient implements MessageListener {
 			public void run() {
 
 				try {
-					SVConfigMessage configMsg = (SVConfigMessage) input.readObject();
+					SVConfigMessage configMsg = (SVConfigMessage) input
+							.readObject();
 					game.setMap(configMsg.map);
 					game.setPlayerNumber(configMsg.yourNumber);
 					adjustPlayers(configMsg.nPlayers);
-					
+
 					System.out.println("My number is " + configMsg.yourNumber);
-					
+
 					while (true) {
 						Message msg = (Message) input.readObject();
-						
+
 						if (msg instanceof SVConfigMessage) {
 							SVConfigMessage svmsg = (SVConfigMessage) msg;
 							adjustPlayers(svmsg.nPlayers);
 
 						} else {
-							System.out.println("hueheuheu");
 							game.getGame().process((GameMessage) msg);
 						}
-						
+
 						Thread.yield();
 					}
 				} catch (IOException | ClassNotFoundException e) {
+					e.printStackTrace();
 				}
 			}
 		});
 	}
-	
+
 	public void adjustPlayers(int nPlayers) {
 		if (game.getGame().getNPlayers() != nPlayers) {
 			for (int i = game.getGame().getNPlayers(); i < nPlayers; i++) {

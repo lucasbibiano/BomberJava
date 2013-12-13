@@ -35,7 +35,7 @@ public class GameWindow extends JFrame implements Drawable {
 	private static final long serialVersionUID = 5593300460625998050L;
 
 	private BufferStrategy bStrategy;
-	private GameClient game;
+	private volatile GameClient game;
 
 	private boolean gameRunning = true;
 
@@ -129,7 +129,6 @@ public class GameWindow extends JFrame implements Drawable {
 		game.setMessageListener(client);
 		client.listen();
 		
-
 		GameWindow window = new GameWindow(game);
 		window.gameLoop();
 	}
