@@ -26,15 +26,6 @@ public class PlayerGraphics extends GameObjectGraphics {
 		this.player = (Player) player;
 	}
 	
-	public void addBomb(Bomb bomb) {
-		player.getGame().getBombs().add(bomb);
-	}
-	
-	public void addExplosion(Explosion exp) {
-		player.getGame().getExplosions().add(exp);
-	}
-
-	
 	@Override
 	public void draw(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;

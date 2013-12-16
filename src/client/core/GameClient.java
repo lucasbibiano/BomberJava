@@ -91,6 +91,10 @@ public class GameClient implements Drawable {
 	}
 
 	public void update() {
+		if (!game.canStart()) {
+			return;
+		}
+		
 		GameMessage message = new GameMessage();
 		
 		System.out.println(message);
@@ -110,15 +114,21 @@ public class GameClient implements Drawable {
 		message.placeBomb = keyListener.isPressed(KeyEvent.VK_SPACE);
 		message.placeBlock = keyListener.isPressed(KeyEvent.VK_SHIFT);
 		message.playerNumber = playerNumber;
-		
-		if (moves[0] || moves[1] || moves[2] || moves[3] || message.placeBlock || message.placeBomb)
-			System.out.println(message);
 
 		if (messageListener != null) {
 			messageListener.messageReceived(message);
 		}
 		
-		game.update();
+		for (int i = 0; i < game.getMessages().size(); i++) {
+			GameMessage msg = game.getMessages().get(i);
+			
+			game.updatePlayer(msg.playerNumber, msg.moves);
+			
+			if (msg.placeBomb)
+				game.placeBomb(msg.playerNumber);
+		}
+		
+		game.getMessages().clear();
 	}
 
 	public void setKeyInput(GameKeyListener keyListener) {

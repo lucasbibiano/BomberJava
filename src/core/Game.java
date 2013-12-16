@@ -30,6 +30,14 @@ public class Game {
 		explosions = new ArrayList<Explosion>();
 	}
 	
+	public void updatePlayer(int n, boolean[] moves) {
+		players[n].move(moves);
+	}
+	
+	public ArrayList<GameMessage> getMessages() {
+		return messages;
+	}
+	
 	public boolean canStart() {
 		return nPlayers >= 2;
 	}
@@ -93,5 +101,11 @@ public class Game {
 	
 	public List<Explosion> getExplosions() {
 		return explosions;
+	}
+
+	public void placeBomb(int playerNumber) {
+		Bomb b = new Bomb(this, 3, players[playerNumber]);
+		bombs.add(b);
+		b.start();
 	}
 }
